@@ -1,4 +1,4 @@
-package apps.bishoya.myapplication;
+package apps.vip.clippy;
 
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
@@ -16,14 +16,8 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-
-public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+public class Connection {
+    Connection(){
 
         initializeDiscoveryListener();
 
@@ -41,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMessage( String message ) {
                 System.out.println(message);
-//                JSONObject obj = null;
-//                try {
-//                    obj = new JSONObject(message);
-//                    String channel = obj.getString("channel");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                //                JSONObject obj = null;
+                //                try {
+                //                    obj = new JSONObject(message);
+                //                    String channel = obj.getString("channel");
+                //                } catch (JSONException e) {
+                //                    e.printStackTrace();
+                //                }
 
             }
 
@@ -70,18 +64,17 @@ public class MainActivity extends AppCompatActivity {
 
         };
         //open websocket
-//        mWs.connect();
-//        JSONObject obj = new JSONObject();
-//        try {
-//            obj.put("event", "addChannel");
-//            obj.put("channel", "ok_btccny_ticker");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        String message = obj.toString();
-        //send message
-//        mWs.send(message);
-
+        //        mWs.connect();
+        //        JSONObject obj = new JSONObject();
+        //        try {
+        //            obj.put("event", "addChannel");
+        //            obj.put("channel", "ok_btccny_ticker");
+        //        } catch (JSONException e) {
+        //            e.printStackTrace();
+        //        }
+        //        String message = obj.toString();
+                //send message
+        //        mWs.send(message);
     }
     public void initializeDiscoveryListener() {
         String TAG="debug:";
