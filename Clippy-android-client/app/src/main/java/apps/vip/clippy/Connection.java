@@ -1,54 +1,59 @@
 package apps.vip.clippy;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
-import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import org.json.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import android.content.Context;
 
 public class Connection {
-    Connection(){
+    Connection( ClipboardManager clipboardManager){
 
         initializeDiscoveryListener();
 
-
+        String url="192.168.0.40";
+        String port="8765";
         URI uri= null;
         try {
-            uri = new URI( "ws://192.168.0.40:8765/0" );
+            uri = new URI( "ws://"+url+":"+port+"/getClipboard" );
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         WebSocketClient mWs = new WebSocketClient(uri)
         {
-
-
             @Override
             public void onMessage( String message ) {
                 System.out.println(message);
-                //                JSONObject obj = null;
-                //                try {
-                //                    obj = new JSONObject(message);
-                //                    String channel = obj.getString("channel");
-                //                } catch (JSONException e) {
-                //                    e.printStackTrace();
-                //                }
+                Log.d("testing connection", "onMessage: "+message);
+                JSONObject obj = null;
+                try {
+                    obj = new JSONObject(message);
+                   String type=obj.getString("type");
+                   String data=obj.getString("data");
+                   if (type.compareTo("clipboard")==0){
+                       ClipData clipData = ClipData.newPlainText("text",data);
+                       clipboardManager.setPrimaryClip(clipData);
+                   }else {
+
+                   }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
             }
 
             @Override
             public void onOpen( ServerHandshake handshake ) {
                 System.out.println( "opened connection" );
-                this.send("test");
+                //this.send("test");
 
             }
 
@@ -64,7 +69,7 @@ public class Connection {
 
         };
         //open websocket
-        //        mWs.connect();
+        mWs.connect();
         //        JSONObject obj = new JSONObject();
         //        try {
         //            obj.put("event", "addChannel");

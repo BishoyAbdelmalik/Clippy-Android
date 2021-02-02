@@ -5,6 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
@@ -32,7 +34,7 @@ public class ForegroundService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
-        new Connection();
+        new Connection((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE));
         //do heavy work on a background thread
         //stopSelf();
         return START_NOT_STICKY;
