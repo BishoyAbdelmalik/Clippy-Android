@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat;
 
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
+    private Connection getClipboard;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,7 +35,12 @@ public class ForegroundService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
-        new Connection((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE));
+        ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        String url="192.168.0.40";
+        String port="8765";
+        String path="getClipboard";
+        getClipboard=new Connection(clipboardManager,url,port,path);
+
         //do heavy work on a background thread
         //stopSelf();
         return START_NOT_STICKY;
@@ -42,6 +48,7 @@ public class ForegroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getClipboard.close();
     }
     @Nullable
     @Override

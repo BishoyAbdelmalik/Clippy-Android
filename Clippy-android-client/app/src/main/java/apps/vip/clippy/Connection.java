@@ -10,22 +10,21 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import android.content.Context;
 
 public class Connection {
-    Connection( ClipboardManager clipboardManager){
+    private  WebSocketClient mWs;
+    Connection( ClipboardManager clipboardManager,String url, String port, String path){
 
         initializeDiscoveryListener();
 
-        String url="192.168.0.40";
-        String port="8765";
+
         URI uri= null;
         try {
-            uri = new URI( "ws://"+url+":"+port+"/getClipboard" );
+            uri = new URI( "ws://"+url+":"+port+"/"+path+"" );
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        WebSocketClient mWs = new WebSocketClient(uri)
+        mWs = new WebSocketClient(uri)
         {
             @Override
             public void onMessage( String message ) {
@@ -80,6 +79,10 @@ public class Connection {
         //        String message = obj.toString();
                 //send message
         //        mWs.send(message);
+
+    }
+    public void close(){
+        mWs.close();
     }
     public void initializeDiscoveryListener() {
         String TAG="debug:";
