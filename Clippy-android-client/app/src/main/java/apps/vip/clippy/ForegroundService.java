@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import androidx.core.app.NotificationCompat;
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
     private Connection getClipboard;
+    String url="192.168.0.40";
+    String port="8765";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -36,11 +39,10 @@ public class ForegroundService extends Service {
                 .build();
         startForeground(1, notification);
         ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        String url="192.168.0.40";
-        String port="8765";
+
         String path="getClipboard";
         getClipboard=new Connection(clipboardManager,url,port,path);
-
+        clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
         //do heavy work on a background thread
         //stopSelf();
         return START_NOT_STICKY;
@@ -64,6 +66,20 @@ public class ForegroundService extends Service {
             );
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
+        }
+    }
+
+    private class ClipboardListener implements ClipboardManager.OnPrimaryClipChangedListener {
+
+        @Override
+        public void onPrimaryClipChanged() {
+            ClipboardManager clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            CharSequence pasteData = "";
+            ClipData.Item item = clipBoard.getPrimaryClip().getItemAt(0);
+            pasteData = item.getText();
+            if(Connection.lastRecieved.compareTo(String.valueOf(pasteData))!=0) {
+                new Connection(clipBoard, url, port, "send", String.valueOf(pasteData));
+            }
         }
     }
 }

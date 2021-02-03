@@ -6,6 +6,7 @@ import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.*;
 import java.net.URI;
@@ -13,6 +14,7 @@ import java.net.URISyntaxException;
 
 public class Connection {
     private  WebSocketClient mWs;
+    public  static String lastRecieved="";
     Connection( ClipboardManager clipboardManager,String url, String port, String path){
 
         initializeDiscoveryListener();
@@ -36,6 +38,7 @@ public class Connection {
                    String type=obj.getString("type");
                    String data=obj.getString("data");
                    if (type.compareTo("clipboard")==0){
+                       lastRecieved=data;
                        ClipData clipData = ClipData.newPlainText("text",data);
                        clipboardManager.setPrimaryClip(clipData);
                    }else {
@@ -81,6 +84,27 @@ public class Connection {
         //        mWs.send(message);
 
     }
+
+    public Connection(ClipboardManager clipBoard, String url, String port, String send, String valueOf) {
+        this(clipBoard,url,port,send);
+        while (mWs.getReadyState() != ReadyState.OPEN);
+        sendClipboard(valueOf);
+
+    }
+    public void sendClipboard(String text) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("type","clipboard");
+            obj.put("data",text);
+            Log.d("send", "sendClipboard: "+obj.toString());
+            String msg=obj.toString();
+            mWs.send(msg);
+            mWs.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void close(){
         mWs.close();
     }
