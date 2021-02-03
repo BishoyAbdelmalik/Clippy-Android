@@ -21,12 +21,14 @@ import java.net.URISyntaxException;
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
     private Connection getClipboard;
-    String url="192.168.0.40";
-    String port="8765";
+    public static String url = "192.168.0.40";
+    public static String port = "8765";
+
     @Override
     public void onCreate() {
         super.onCreate();
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String input = intent.getStringExtra("inputExtra");
