@@ -15,6 +15,9 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
     private Connection getClipboard;
@@ -41,7 +44,7 @@ public class ForegroundService extends Service {
         ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         String path="getClipboard";
-        getClipboard=new Connection(clipboardManager,url,port,path);
+        getClipboard = new Connection(clipboardManager, getURI(url, port, path));
         clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
         //do heavy work on a background thread
         //stopSelf();
@@ -69,6 +72,16 @@ public class ForegroundService extends Service {
         }
     }
 
+    private URI getURI(String url, String port, String path) {
+        URI uri = null;
+        try {
+            uri = new URI("ws://" + url + ":" + port + "/" + path + "");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
+
     private class ClipboardListener implements ClipboardManager.OnPrimaryClipChangedListener {
 
         @Override
@@ -77,8 +90,8 @@ public class ForegroundService extends Service {
             CharSequence pasteData = "";
             ClipData.Item item = clipBoard.getPrimaryClip().getItemAt(0);
             pasteData = item.getText();
-            if(Connection.lastRecieved.compareTo(String.valueOf(pasteData))!=0) {
-                new Connection(clipBoard, url, port, "send", String.valueOf(pasteData));
+            if (Connection.lastRecieved.compareTo(String.valueOf(pasteData)) != 0) {
+                new Connection(clipBoard, getURI(url, port, "send"), "clipboard", String.valueOf(pasteData));
             }
         }
     }
