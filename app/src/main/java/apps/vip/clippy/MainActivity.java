@@ -23,22 +23,14 @@ public class MainActivity extends AppCompatActivity {
         Button save = findViewById(R.id.saveIP);
         Button stop = findViewById(R.id.stop);
         Context context = this;
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ForegroundService.url = ip.getText().toString();
-                ForegroundService.port = port.getText().toString();
-                new serviceControl().startService(context);
-                Intent activity = new Intent(context, main_page.class);
-                startActivity(activity);
-            }
+        save.setOnClickListener(v -> {
+            ForegroundService.url = ip.getText().toString();
+            ForegroundService.port = port.getText().toString();
+            new serviceControl().startService(context);
+            Intent activity = new Intent(context, main_page.class);
+            startActivity(activity);
         });
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new serviceControl().killService(context);
-            }
-        });
+        stop.setOnClickListener(v -> new serviceControl().killService(context));
 
 
     }

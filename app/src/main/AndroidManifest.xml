@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Clippy">
-        <activity android:name=".main_page"></activity>
+        <activity android:name=".media_control">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main_page" />
+        </activity>
+        <activity android:name=".main_page" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +29,8 @@
             android:exported="true" />
     </application>
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 </manifest>
