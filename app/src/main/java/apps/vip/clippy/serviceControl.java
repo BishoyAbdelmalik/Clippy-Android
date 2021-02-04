@@ -2,7 +2,6 @@ package apps.vip.clippy;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.*;
 
 import androidx.core.content.ContextCompat;
 

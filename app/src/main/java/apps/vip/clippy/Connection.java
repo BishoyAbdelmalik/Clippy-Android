@@ -71,19 +71,35 @@ public class Connection {
         while (mWs.getReadyState() != ReadyState.OPEN) ;
         if (type.compareTo("clipboard") == 0) {
             sendClipboard(data);
+        } else if (type.compareTo("command") == 0) {
+            sendCommand(data);
         } else {
 
         }
 
     }
 
-    public void sendClipboard(String text) {
+    private void sendCommand(String command) {
         JSONObject obj = new JSONObject();
         try {
-            obj.put("type","clipboard");
-            obj.put("data",text);
-            Log.d("send", "sendClipboard: "+obj.toString());
-            String msg=obj.toString();
+            obj.put("type", "command");
+            obj.put("data", command);
+            Log.d("send", "sendCommand: " + obj.toString());
+            String msg = obj.toString();
+            mWs.send(msg);
+            mWs.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendClipboard(String text) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("type", "clipboard");
+            obj.put("data", text);
+            Log.d("send", "sendClipboard: " + obj.toString());
+            String msg = obj.toString();
             mWs.send(msg);
             mWs.close();
         } catch (JSONException e) {

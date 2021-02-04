@@ -74,7 +74,7 @@ public class ForegroundService extends Service {
         }
     }
 
-    private URI getURI(String url, String port, String path) {
+    private static URI getURI(String url, String port, String path) {
         URI uri = null;
         try {
             uri = new URI("ws://" + url + ":" + port + "/" + path + "");
@@ -82,6 +82,10 @@ public class ForegroundService extends Service {
             e.printStackTrace();
         }
         return uri;
+    }
+
+    public static void sendCommand(ClipboardManager clipBoard, String command) {
+        new Connection(clipBoard, getURI(url, port, "send"), "command", command);
     }
 
     private class ClipboardListener implements ClipboardManager.OnPrimaryClipChangedListener {

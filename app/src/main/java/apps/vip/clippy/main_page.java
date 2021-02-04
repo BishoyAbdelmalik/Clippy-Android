@@ -14,8 +14,7 @@ public class main_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        Button mediaPage = findViewById(R.id.media);
         Context context = this;
-        mediaPage.setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
+        findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
     }
 }
