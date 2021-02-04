@@ -35,15 +35,20 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/PCname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                style="@style/colorblackText"
+                android:text="PC name" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/connectionStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="TextView" />
         </LinearLayout>
     </LinearLayout>

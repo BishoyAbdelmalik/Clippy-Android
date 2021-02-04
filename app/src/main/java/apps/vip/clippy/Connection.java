@@ -53,7 +53,7 @@ public class Connection {
 
             @Override
             public void onClose( int code, String reason, boolean remote ) {
-                System.out.println( "closed connection" );
+                System.out.println("closed connection code:" + code + " reason:" + reason);
             }
 
             @Override

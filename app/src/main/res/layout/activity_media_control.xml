@@ -21,30 +21,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_media_play" />
 
-    <Button
-        android:id="@+id/volumeUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="462dp"
-        android:layout_marginBottom="221dp"
-        android:text="Volume Up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/volumeDown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/volumeDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="462dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="221dp"
-        android:text="Volume Down"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/volumeUp"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/volumeUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="462dp"
+            android:layout_marginBottom="221dp"
+            android:text="Volume Up" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="30dp"
+            android:layout_height="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/volumeDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="462dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="221dp"
+            android:text="Volume Down" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
