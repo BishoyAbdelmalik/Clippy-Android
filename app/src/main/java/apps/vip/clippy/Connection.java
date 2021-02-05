@@ -46,7 +46,8 @@ public class Connection {
 
             @Override
             public void onOpen( ServerHandshake handshake ) {
-                System.out.println( "opened connection" );
+                System.out.println("opened connection");
+                ForegroundService.connected = true;
                 //this.send("test");
 
             }
@@ -54,10 +55,12 @@ public class Connection {
             @Override
             public void onClose( int code, String reason, boolean remote ) {
                 System.out.println("closed connection code:" + code + " reason:" + reason);
+                ForegroundService.connected = false;
             }
 
             @Override
             public void onError(Exception ex) {
+                ForegroundService.connected = false;
                 ex.printStackTrace();
             }
 

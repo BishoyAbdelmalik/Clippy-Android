@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".media_control">
 
-    <ImageButton
+    <Button
         android:id="@+id/playPause"
-        android:layout_width="115dp"
-        android:layout_height="111dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginStart="170dp"
         android:layout_marginTop="341dp"
         android:layout_marginEnd="170dp"
         android:layout_marginBottom="341dp"
+        android:background="@drawable/pause_play"
         android:contentDescription="TODO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"

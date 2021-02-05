@@ -23,7 +23,7 @@ public class ForegroundService extends Service {
     private Connection getClipboard;
     public static String url = "192.168.0.40";
     public static String port = "8765";
-
+    public static boolean connected = false;
     @Override
     public void onCreate() {
         super.onCreate();
