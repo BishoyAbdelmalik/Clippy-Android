@@ -27,15 +27,31 @@ public class Connection {
                 JSONObject obj = null;
                 try {
                     obj = new JSONObject(message);
-                   String type=obj.getString("type");
-                   String data=obj.getString("data");
-                   if (type.compareTo("clipboard")==0){
-                       lastRecieved=data;
-                       ClipData clipData = ClipData.newPlainText("text",data);
-                       clipboardManager.setPrimaryClip(clipData);
-                   }else {
+                    String type = obj.getString("type");
+                    String data = obj.getString("data");
+                    if (type.compareTo("clipboard") == 0) {
+                        lastRecieved = data;
+                        ClipData clipData = ClipData.newPlainText("text", data);
+                        clipboardManager.setPrimaryClip(clipData);
+                    }
+                    if (type.compareTo("info") == 0) {
+                        JSONObject jsonData = new JSONObject(data);
+                        if (jsonData.has("type")) {
+                            type = jsonData.getString("type");
+                            if (type.compareTo("media") == 0) {
+                                String title = jsonData.getString("title");
+                                String thumb = jsonData.getString("thumbnail");
+                                media_control.playingTxt.setText(title);
 
-                   }
+                                System.out.println("playing title from connection " + title);
+                            } else {
+
+                            }
+                        }
+
+                    } else {
+
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -76,10 +92,26 @@ public class Connection {
             sendClipboard(data);
         } else if (type.compareTo("command") == 0) {
             sendCommand(data);
+        }
+        if (type.compareTo("info") == 0) {
+            getInfo(data);
         } else {
 
         }
 
+    }
+
+    private void getInfo(String command) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("type", "info");
+            obj.put("data", command);
+            Log.d("send", "sendCommand: " + obj.toString());
+            String msg = obj.toString();
+            mWs.send(msg);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendCommand(String command) {

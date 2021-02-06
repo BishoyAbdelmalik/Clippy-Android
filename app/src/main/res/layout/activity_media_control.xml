@@ -1,54 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".media_control">
-
-    <Button
-        android:id="@+id/playPause"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="341dp"
-        android:layout_marginEnd="170dp"
-        android:layout_marginBottom="341dp"
-        android:background="@drawable/pause_play"
-        android:contentDescription="TODO"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".media_control"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp">
 
-        <Button
-            android:id="@+id/volumeUp"
+        <ImageView
+            android:id="@+id/playingThumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="462dp"
-            android:layout_marginBottom="221dp"
-            android:text="Volume Up" />
+            android:src="@android:drawable/sym_def_app_icon"
+            android:scaleType="center"
+            android:layout_margin="10dp" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="30dp"
-            android:layout_height="10dp"
-            android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
-        <Button
-            android:id="@+id/volumeDown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="462dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="221dp"
-            android:text="Volume Down" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Playing:" />
+
+            <TextView
+                android:id="@+id/playing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                style="@style/colorblackText"
+                android:text="Hello World" />
+        </LinearLayout>
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/playPause"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/pause_play"
+            android:layout_margin="10dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/volumeDown"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="30dp"
+                android:background="@drawable/volumedown_btn" />
+
+            <Button
+                android:id="@+id/volumeUp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="30dp"
+                android:background="@drawable/volumeup_btn" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

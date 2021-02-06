@@ -88,6 +88,10 @@ public class ForegroundService extends Service {
         new Connection(clipBoard, getURI(url, port, "send"), "command", command);
     }
 
+    public static void getInfo(ClipboardManager clipBoard, String command) {
+        new Connection(clipBoard, getURI(url, port, "send"), "info", command);
+    }
+
     private class ClipboardListener implements ClipboardManager.OnPrimaryClipChangedListener {
 
         @Override
