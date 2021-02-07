@@ -45,7 +45,7 @@ public class ForegroundService extends Service {
         startForeground(1, notification);
         ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
-        String path="getClipboard";
+        String path = "get";
         getClipboard = new Connection(clipboardManager, getURI(url, port, path));
         clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
         //do heavy work on a background thread

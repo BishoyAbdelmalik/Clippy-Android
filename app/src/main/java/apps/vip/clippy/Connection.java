@@ -41,8 +41,13 @@ public class Connection {
                             if (type.compareTo("media") == 0) {
                                 String title = jsonData.getString("title");
                                 String thumb = jsonData.getString("thumbnail");
-                                media_control.playingTxt.setText(title);
+                                if (media_control.playingTxt != null) {
+                                    media_control.playingTxt.setText(title);
+                                    media_control.playingTXT = title;
+                                } else {
+                                    media_control.playingTXT = title;
 
+                                }
                                 System.out.println("playing title from connection " + title);
                             } else {
 
