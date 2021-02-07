@@ -1,5 +1,6 @@
 package apps.vip.clippy;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.net.nsd.NsdManager;
@@ -65,18 +66,26 @@ public class Connection {
 
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onOpen( ServerHandshake handshake ) {
                 System.out.println("opened connection");
                 ForegroundService.connected = true;
+                if (main_page.connectionStatus != null) {
+                    main_page.connectionStatus.setText("Connected");
+                }
                 //this.send("test");
 
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onClose( int code, String reason, boolean remote ) {
+            public void onClose(int code, String reason, boolean remote ) {
                 System.out.println("closed connection code:" + code + " reason:" + reason);
                 ForegroundService.connected = false;
+                if (main_page.connectionStatus != null) {
+                    main_page.connectionStatus.setText("Not Connected");
+                }
             }
 
             @Override
@@ -90,9 +99,13 @@ public class Connection {
         mWs.connect();
     }
 
+    public boolean isConnected() {
+        return mWs.getReadyState() == ReadyState.OPEN;
+    }
+
     public Connection(ClipboardManager clipBoard, URI uri, String type, String data) {
         this(clipBoard, uri);
-        while (mWs.getReadyState() != ReadyState.OPEN) ;
+        while (!isConnected()) ;
         if (type.compareTo("clipboard") == 0) {
             sendClipboard(data);
         } else if (type.compareTo("command") == 0) {

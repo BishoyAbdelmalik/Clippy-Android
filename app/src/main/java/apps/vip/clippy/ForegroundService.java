@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    private Connection getClipboard;
+    public static Connection main = null;
     public static String url = "192.168.0.40";
     public static String port = "8765";
     public static boolean connected = false;
@@ -46,7 +46,7 @@ public class ForegroundService extends Service {
         ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         String path = "get";
-        getClipboard = new Connection(clipboardManager, getURI(url, port, path));
+        main = new Connection(clipboardManager, getURI(url, port, path));
         clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
         //do heavy work on a background thread
         //stopSelf();
@@ -55,7 +55,7 @@ public class ForegroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getClipboard.close();
+        main.close();
     }
     @Nullable
     @Override
@@ -98,10 +98,12 @@ public class ForegroundService extends Service {
         public void onPrimaryClipChanged() {
             ClipboardManager clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             CharSequence pasteData = "";
-            ClipData.Item item = clipBoard.getPrimaryClip().getItemAt(0);
-            pasteData = item.getText();
-            if (Connection.lastRecieved.compareTo(String.valueOf(pasteData)) != 0) {
-                new Connection(clipBoard, getURI(url, port, "send"), "clipboard", String.valueOf(pasteData));
+            if (clipBoard.getPrimaryClip() != null) {
+                ClipData.Item item = clipBoard.getPrimaryClip().getItemAt(0);
+                pasteData = item.getText();
+                if (Connection.lastRecieved.compareTo(String.valueOf(pasteData)) != 0) {
+                    new Connection(clipBoard, getURI(url, port, "send"), "clipboard", String.valueOf(pasteData));
+                }
             }
         }
     }

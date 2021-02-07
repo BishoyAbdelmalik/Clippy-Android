@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class main_page extends AppCompatActivity {
-
+    public static TextView connectionStatus = null;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +21,19 @@ public class main_page extends AppCompatActivity {
         //PCname.setTextSize((float) (PCname.getTextSize()*1.2));
         Context context = this;
         findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
-        TextView connectionStatus = findViewById(R.id.connectionStatus);
-        if (ForegroundService.connected) {
-            connectionStatus.setText("Connected");
-        } else {
-            connectionStatus.setText("Not Connected");
+        connectionStatus = findViewById(R.id.connectionStatus);
+        if (ForegroundService.main != null) {
+            if (ForegroundService.main.isConnected()) {
+                connectionStatus.setText("Connected");
+            } else {
+                connectionStatus.setText("Not Connected");
+            }
         }
+
+//        if (ForegroundService.connected) {
+//            connectionStatus.setText("Connected");
+//        } else {
+//            connectionStatus.setText("Not Connected");
+//        }
     }
 }
