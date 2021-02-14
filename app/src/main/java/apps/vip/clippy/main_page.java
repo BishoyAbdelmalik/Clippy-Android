@@ -3,9 +3,11 @@ package apps.vip.clippy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class main_page extends AppCompatActivity {
@@ -31,11 +33,11 @@ public class main_page extends AppCompatActivity {
             ForegroundService.main.close();
             startActivity(new Intent(context, MainActivity.class));
         });
+        Button shutdown=findViewById(R.id.shutdown);
+        Button reboot=findViewById(R.id.reboot);
+        shutdown.setOnClickListener(v->ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "shutdown"));
+        reboot.setOnClickListener(v->ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "reboot"));
 
-//        if (ForegroundService.connected) {
-//            connectionStatus.setText("Connected");
-//        } else {
-//            connectionStatus.setText("Not Connected");
-//        }
+
     }
 }
