@@ -2,10 +2,15 @@ package apps.vip.clippy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.ClipboardManager;
 
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,13 +27,10 @@ public class media_control extends AppCompatActivity {
         playingTxt = findViewById(R.id.playing);
         playingTxt.setText(playingTXT);
         findViewById(R.id.playPause).setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "playPause"));
-        findViewById(R.id.volumeUp).setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeUp"));
-        findViewById(R.id.volumeDown).setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeDown"));
-//        AsyncTask.execute(() -> {
-//            ForegroundService.getInfo((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "media");
-//        });
-
-
+        Button volumeUp = findViewById(R.id.volumeUp);
+        Button volumeDown = findViewById(R.id.volumeDown);
+        volumeUp.setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeUp"));
+        volumeDown.setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeDown"));
     }
 
 
