@@ -3,19 +3,12 @@ package apps.vip.clippy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipboardManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.InputStream;
 
 public class media_control extends AppCompatActivity {
     public static TextView playingTxt = null;
