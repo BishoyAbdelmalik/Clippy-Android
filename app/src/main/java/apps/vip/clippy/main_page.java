@@ -6,8 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class main_page extends AppCompatActivity {
@@ -29,6 +27,10 @@ public class main_page extends AppCompatActivity {
                 connectionStatus.setText("Not Connected");
             }
         }
+        PCname.setOnClickListener(v -> {
+            ForegroundService.main.close();
+            startActivity(new Intent(context, MainActivity.class));
+        });
 
 //        if (ForegroundService.connected) {
 //            connectionStatus.setText("Connected");

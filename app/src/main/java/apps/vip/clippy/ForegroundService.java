@@ -24,6 +24,8 @@ public class ForegroundService extends Service {
     public static String url = "192.168.0.40";
     public static String port = "8765";
     public static boolean connected = false;
+    public static boolean started = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,6 +33,7 @@ public class ForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        started = true;
         String input = intent.getStringExtra("inputExtra");
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -47,6 +50,7 @@ public class ForegroundService extends Service {
 
         String path = "get";
         main = new Connection(clipboardManager, getURI(url, port, path));
+        main.setAsMain();
         clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
         //do heavy work on a background thread
         //stopSelf();
@@ -56,6 +60,8 @@ public class ForegroundService extends Service {
     public void onDestroy() {
         super.onDestroy();
         main.close();
+        started = false;
+
     }
     @Nullable
     @Override

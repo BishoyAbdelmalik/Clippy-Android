@@ -3,20 +3,17 @@ package apps.vip.clippy;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.net.nsd.NsdManager;
-import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.*;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class Connection {
     private final WebSocketClient mWs;
     public static String lastRecieved = "";
-
+    boolean mainConnection = false;
     Connection(ClipboardManager clipboardManager, URI uri) {
 
 
@@ -71,7 +68,7 @@ public class Connection {
             public void onOpen( ServerHandshake handshake ) {
                 System.out.println("opened connection");
                 ForegroundService.connected = true;
-                if (main_page.connectionStatus != null) {
+                if (main_page.connectionStatus != null && mainConnection) {
                     main_page.connectionStatus.setText("Connected");
                 }
                 //this.send("test");
@@ -83,7 +80,7 @@ public class Connection {
             public void onClose(int code, String reason, boolean remote ) {
                 System.out.println("closed connection code:" + code + " reason:" + reason);
                 ForegroundService.connected = false;
-                if (main_page.connectionStatus != null) {
+                if (main_page.connectionStatus != null && mainConnection) {
                     main_page.connectionStatus.setText("Not Connected");
                 }
             }
@@ -162,5 +159,9 @@ public class Connection {
 
     public void close() {
         mWs.close();
+    }
+
+    public void setAsMain() {
+        this.mainConnection = true;
     }
 }
