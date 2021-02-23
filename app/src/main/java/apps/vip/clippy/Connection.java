@@ -31,8 +31,7 @@ public class Connection {
                         lastRecieved = data;
                         ClipData clipData = ClipData.newPlainText("text", data);
                         clipboardManager.setPrimaryClip(clipData);
-                    }
-                    if (type.compareTo("info") == 0) {
+                    } else if (type.compareTo("info") == 0) {
                         JSONObject jsonData = new JSONObject(data);
                         if (jsonData.has("type")) {
                             type = jsonData.getString("type");
@@ -41,16 +40,18 @@ public class Connection {
                                 String thumb = jsonData.getString("thumbnail");
                                 if (media_control.playingTxt != null) {
                                     media_control.playingTxt.setText(title);
-                                    media_control.playingTXT = title;
-                                } else {
-                                    media_control.playingTXT = title;
-
                                 }
+                                media_control.playingTXT = title;
                                 System.out.println("playing title from connection " + title);
-                            } else {
-
                             }
                         }
+
+                    } else if (type.compareTo("file_path") == 0) {
+                        String path = data;
+                        System.out.println("filePath " + path);
+                        String url = "http://" + ForegroundService.url + ":5000/get?f=" + path;
+                        new downloadFile(url, MainActivity.context);
+
 
                     } else {
 

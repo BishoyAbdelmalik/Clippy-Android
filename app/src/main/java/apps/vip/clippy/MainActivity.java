@@ -1,9 +1,13 @@
 package apps.vip.clippy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -17,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     String ip="192.168.0.40";
     String port = "8765";
     boolean scan = false;
+    static Context context = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         port.setText(this.port);
         Button save = findViewById(R.id.saveIP);
         Button stop = findViewById(R.id.stop);
-        Context context = this;
+        context = this;
         save.setOnClickListener(v -> openMainPage(context));
         stop.setOnClickListener(v -> new serviceControl().killService(context));
         Button scan = findViewById(R.id.scan);
@@ -42,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(activity);
             }
         }
+        Button test = findViewById(R.id.test);
+        test.setOnClickListener(v -> startActivity(new Intent(this, test.class)));
+        verifyStoragePermissions(this);
+
     }
 
     private void openMainPage(Context context) {
@@ -94,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("qr "+contents);
                 try {
                     JSONObject jsonData = new JSONObject(contents);
-                    System.out.println("qr "+jsonData.get("ip"));
-                    System.out.println("qr "+jsonData.get("port"));
-                    ip= String.valueOf(jsonData.get("ip"));
+                    System.out.println("qr " + jsonData.get("ip"));
+                    System.out.println("qr " + jsonData.get("port"));
+                    ip = String.valueOf(jsonData.get("ip"));
                     port = String.valueOf(jsonData.get("port"));
                     scan = true;
                 } catch (JSONException e) {
@@ -104,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-            if(resultCode == RESULT_CANCELED){
+            if (resultCode == RESULT_CANCELED) {
                 //handle cancel
                 System.out.println("qr cancelled");
 
@@ -112,5 +121,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    /**
+     * Checks if the app has permission to write to device storage
+     * <p>
+     * If the app does not has permission then the user will be prompted to grant permissions
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
 
 }
