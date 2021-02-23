@@ -6,7 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.StrictMode;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,20 +19,24 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static apps.vip.clippy.ForegroundService.CHANNEL_ID;
+
 public class downloadFile {
     downloadFile(String url, Context context) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         DownloadManager downloadmanager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-//        String url ="http://192.168.0.40:5000/static/media_thumb.jpg";
+        String filename=url.substring(url.lastIndexOf('\\')+1);
+
         Uri uri = Uri.parse(url);
 
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("My File");
         request.setDescription("Downloading");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
         request.setVisibleInDownloadsUi(false);
-        //System.out.println("path "+Environment.g );
-        //request.setDestinationUri(Uri.parse("file:///storage/emulated/0/" +"/media.jpg" ));
-        File directory = new File(context.getExternalFilesDir(null), "media_thumb.jpg");
+
+        File directory = new File(context.getExternalFilesDir(null), filename);
         request.setDestinationUri(Uri.fromFile(directory));
 
         System.out.println("path " + Uri.fromFile(directory));
@@ -38,7 +46,15 @@ public class downloadFile {
         BroadcastReceiver onComplete = new BroadcastReceiver() {
             public void onReceive(Context ctxt, Intent intent) {
                 // your code
-                moveFile(String.valueOf(context.getExternalFilesDir(null)), "/media_thumb.jpg", "/storage/emulated/0/");
+                moveFile(directory.getParentFile().getAbsolutePath()+"/", filename, "/storage/emulated/0/clippy/");
+
+                Toast.makeText(context, "File Received", Toast.LENGTH_SHORT).show();
+//                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+//                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                        .setContentTitle("File Received")
+//                        .setContentText(filename)
+//                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//                builder.notify();
 
             }
         };
