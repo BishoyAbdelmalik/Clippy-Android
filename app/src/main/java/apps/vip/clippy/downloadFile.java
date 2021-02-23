@@ -24,7 +24,7 @@ public class downloadFile {
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("My File");
         request.setDescription("Downloading");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setVisibleInDownloadsUi(false);
         //System.out.println("path "+Environment.g );
         //request.setDestinationUri(Uri.parse("file:///storage/emulated/0/" +"/media.jpg" ));
