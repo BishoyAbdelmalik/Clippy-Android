@@ -18,7 +18,6 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Clippy">
-        <activity android:name=".test"></activity>
         <activity android:name=".media_control">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

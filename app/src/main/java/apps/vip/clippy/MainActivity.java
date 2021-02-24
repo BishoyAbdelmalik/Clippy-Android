@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(activity);
             }
         }
-        Button test = findViewById(R.id.test);
-        test.setOnClickListener(v -> startActivity(new Intent(this, test.class)));
+
         verifyStoragePermissions(this);
 
     }
