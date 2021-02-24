@@ -1,11 +1,13 @@
 package apps.vip.clippy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 import android.annotation.SuppressLint;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,6 +39,13 @@ public class main_page extends AppCompatActivity {
         Button reboot=findViewById(R.id.reboot);
         shutdown.setOnClickListener(v->ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "shutdown"));
         reboot.setOnClickListener(v->ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "reboot"));
+        Button sendAFile=findViewById(R.id.send_file);
+        sendAFile.setOnClickListener(v -> {
+            String url="http://"+ForegroundService.url+":5000/static/upload.html";
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(context, Uri.parse(url));
+        });
 
 
     }

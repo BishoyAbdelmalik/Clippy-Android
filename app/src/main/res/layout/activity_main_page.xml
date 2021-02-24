@@ -76,7 +76,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/media_controls" />
-
+            <Button
+                android:id="@+id/send_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/send_a_file" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="30dp" />
