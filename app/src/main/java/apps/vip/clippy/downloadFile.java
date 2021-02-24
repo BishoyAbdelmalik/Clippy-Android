@@ -9,25 +9,12 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.os.StrictMode;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import static apps.vip.clippy.ForegroundService.CHANNEL_ID;
 
 public class downloadFile {
     downloadFile(String url, Context context) {
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
+
         MainActivity.verifyStoragePermissions((Activity) context);
 
         DownloadManager downloadmanager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
