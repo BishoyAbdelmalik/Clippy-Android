@@ -1,5 +1,6 @@
 package apps.vip.clippy;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,8 +26,10 @@ import static apps.vip.clippy.ForegroundService.CHANNEL_ID;
 
 public class downloadFile {
     downloadFile(String url, Context context) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+        MainActivity.verifyStoragePermissions((Activity) context);
+
         DownloadManager downloadmanager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         String filename=url.substring(url.lastIndexOf('\\')+1);
 
@@ -36,28 +39,15 @@ public class downloadFile {
         request.setTitle("File Received: "+filename);
         request.setDescription("downloading...");
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            // Do something for lollipop and above versions
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            //create output directory if it doesn't exist
-
-//            File file = new File(String.valueOf(context.getExternalMediaDirs()), filename);
-//            request.setDestinationUri(Uri.fromFile(file));
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOCUMENTS,"clippy");
-//            System.out.println("path " + Uri.fromFile(file));
+            //save in downloads folder
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,filename);
         } else{
             // save in shared storage in folder called clippy
+            request.setDestinationInExternalPublicDir("clippy",filename);
 
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            //create output directory if it doesn't exist
-            File dir = new File(Environment.getExternalStorageDirectory() +"/clippy/");
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            File file = new File(dir, filename);
-            request.setDestinationUri(Uri.fromFile(file));
-
-            System.out.println("path " + Uri.fromFile(file));
         }
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
         request.setVisibleInDownloadsUi(false);
 
         downloadmanager.enqueue(request);
