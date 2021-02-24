@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,18 +35,30 @@ public class downloadFile {
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("File Received: "+filename);
         request.setDescription("downloading...");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setVisibleInDownloadsUi(false);
-        //create output directory if it doesn't exist
-        File dir = new File("/storage/emulated/0/clippy/");
-        if (!dir.exists()) {
-            dir.mkdirs();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            // Do something for lollipop and above versions
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            //create output directory if it doesn't exist
+
+//            File file = new File(String.valueOf(context.getExternalMediaDirs()), filename);
+//            request.setDestinationUri(Uri.fromFile(file));
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOCUMENTS,"clippy");
+//            System.out.println("path " + Uri.fromFile(file));
+        } else{
+            // save in shared storage in folder called clippy
+
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            //create output directory if it doesn't exist
+            File dir = new File(Environment.getExternalStorageDirectory() +"/clippy/");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            File file = new File(dir, filename);
+            request.setDestinationUri(Uri.fromFile(file));
+
+            System.out.println("path " + Uri.fromFile(file));
         }
-        File file = new File(dir, filename);
-        request.setDestinationUri(Uri.fromFile(file));
-
-        System.out.println("path " + Uri.fromFile(file));
-
+        request.setVisibleInDownloadsUi(false);
 
         downloadmanager.enqueue(request);
         BroadcastReceiver onComplete = new BroadcastReceiver() {
