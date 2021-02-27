@@ -9,14 +9,25 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -25,7 +36,7 @@ public class ForegroundService extends Service {
     public static String port = "8765";
     public static boolean connected = false;
     public static boolean started = false;
-
+    public static Context context=null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,7 +58,7 @@ public class ForegroundService extends Service {
                 .build();
         startForeground(1, notification);
         ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-
+        context=this;
         String path = "get";
         main = new Connection(clipboardManager, getURI(url, port, path));
         main.setAsMain();
@@ -96,6 +107,52 @@ public class ForegroundService extends Service {
 
     public static void getInfo(ClipboardManager clipBoard, String command) {
         new Connection(clipBoard, getURI(url, port, "send"), "info", command);
+    }
+    public static void createLinksNotification(ArrayList<String> links) {
+        if(links.size()==0){
+            return;
+        }
+
+        String CHANNEL_ID = "Link";
+        CharSequence name = "link";
+        String Description = "for links from PC";
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        //create the channel
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            mChannel.setDescription(Description);
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+        if (links.size()==1) {
+            for (int i = 0; i < links.size(); i++) {
+                String link = links.get(i);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, browserIntent, 0);
+                Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setContentTitle("Link Received")
+                        .setContentText(link)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .build();
+                mNotificationManager.notify(i + 2, notification);
+            }
+        }else{
+            Intent notificationIntent = new Intent(context, LinksPage.class);
+
+
+            LinksPage.links=links;
+            PendingIntent pendingIntent = PendingIntent.getActivity(context,0, notificationIntent, 0);
+            Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setContentTitle("Links Received")
+                    .setContentText("open to view links")
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .build();
+            mNotificationManager.notify(99, notification);
+        }
+
     }
 
     private class ClipboardListener implements ClipboardManager.OnPrimaryClipChangedListener {

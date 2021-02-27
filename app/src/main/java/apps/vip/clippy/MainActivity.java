@@ -2,12 +2,19 @@ package apps.vip.clippy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,6 +23,8 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     String ip="192.168.0.40";
@@ -49,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         verifyStoragePermissions(this);
-
     }
-
     private void openMainPage(Context context) {
         EditText ip = findViewById(R.id.ip);
         EditText port = findViewById(R.id.port);

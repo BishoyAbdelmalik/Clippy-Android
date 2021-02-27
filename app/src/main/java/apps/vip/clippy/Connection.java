@@ -1,14 +1,26 @@
 package apps.vip.clippy;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.util.Patterns;
+import android.webkit.URLUtil;
+
+import androidx.core.app.NotificationCompat;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.*;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Connection {
     private final WebSocketClient mWs;
@@ -31,6 +43,15 @@ public class Connection {
                         lastRecieved = data;
                         ClipData clipData = ClipData.newPlainText("text", data);
                         clipboardManager.setPrimaryClip(clipData);
+                        String[] arr=data.trim().split("\\s+");
+                        ArrayList<String> links=new ArrayList<>();
+                        for(String s:arr){
+                            if ( Patterns.WEB_URL.matcher(s).matches()){
+                                links.add(s);
+                            }
+                        }
+                        System.out.println("Links in connection "+Arrays.toString(links.toArray()));
+                        ForegroundService.createLinksNotification(links);
                     } else if (type.compareTo("info") == 0) {
                         JSONObject jsonData = new JSONObject(data);
                         if (jsonData.has("type")) {
@@ -96,7 +117,6 @@ public class Connection {
         //open websocket
         mWs.connect();
     }
-
     public boolean isConnected() {
         return mWs.getReadyState() == ReadyState.OPEN;
     }
