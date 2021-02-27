@@ -72,16 +72,31 @@
                 android:id="@+id/volumeDown"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/volumedown_btn" />
 
             <Button
                 android:id="@+id/volumeUp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/volumeup_btn" />
         </LinearLayout>
+        <Button
+            android:id="@+id/mute"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mute_default" />
     </LinearLayout>
 
 </LinearLayout>

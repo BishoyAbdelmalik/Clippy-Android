@@ -29,8 +29,10 @@ public class media_control extends AppCompatActivity {
         findViewById(R.id.playPause).setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "playPause"));
         Button volumeUp = findViewById(R.id.volumeUp);
         Button volumeDown = findViewById(R.id.volumeDown);
+        Button mute = findViewById(R.id.mute);
         volumeUp.setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeUp"));
         volumeDown.setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeDown"));
+        mute.setOnClickListener(v -> ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeMute"));
     }
 
 
