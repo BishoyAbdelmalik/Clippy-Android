@@ -23,6 +23,13 @@
                 android:text="Click on link to open"
                 android:textSize="30sp"
                 style="@style/colorblackText"/>
+
+            <Button
+                android:id="@+id/openAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="Open All links" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

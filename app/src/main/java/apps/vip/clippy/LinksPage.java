@@ -3,6 +3,7 @@ package apps.vip.clippy;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ public class LinksPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_links_page);
-        Intent intent = getIntent();
 
         System.out.println("Links in page "+Arrays.toString(links.toArray()));
         LinearLayout linksView=findViewById(R.id.links);
@@ -42,6 +42,13 @@ public class LinksPage extends AppCompatActivity {
             //add button to the layout
             linksView.addView(btnTag);
         }
+        Button openAll=findViewById(R.id.openAll);
+        openAll.setOnClickListener(v -> {
+            for(String link:links) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                startActivity(browserIntent);
+            }
+        });
 
     }
 }
