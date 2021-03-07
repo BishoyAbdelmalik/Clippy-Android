@@ -23,6 +23,7 @@ public class main_page extends AppCompatActivity {
         //PCname.setTextSize((float) (PCname.getTextSize()*1.2));
         Context context = this;
         findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
+        findViewById(R.id.screenshot_page).setOnClickListener(v -> startActivity(new Intent(context, screenshot_page.class)));
         connectionStatus = findViewById(R.id.connectionStatus);
         if (ForegroundService.main != null) {
             if (ForegroundService.main.isConnected()) {

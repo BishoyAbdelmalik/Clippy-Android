@@ -3,12 +3,19 @@ package apps.vip.clippy;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Patterns;
+import android.widget.ImageView;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.*;
+
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +24,7 @@ public class Connection {
     private final WebSocketClient mWs;
     public static String lastRecieved = "";
     boolean mainConnection = false;
+    Object o;
     Connection(ClipboardManager clipboardManager, URI uri) {
 
 
@@ -59,14 +67,14 @@ public class Connection {
                         }
 
                     } else if (type.compareTo("file_path") == 0) {
-                        String path = data;
-                        System.out.println("filePath " + path);
-                        //TODO get flask port from qrcode too
-                        String url = "http://" + ForegroundService.url + ":5000/get?f=" + path;
-                        new downloadFile(url, MainActivity.context);
-
-
-                    } else {
+                        new downloadFile(createFileURL(data), MainActivity.context);
+                    } else if(type.compareTo("file_screenshot") == 0) {
+                        System.out.println("screenshot: "+data);
+                        if(o!=null){
+                            new DownloadImageTask((ImageView) o)
+                                    .execute(createFileURL(data));
+                        }
+                    }else {
 
                     }
 
@@ -109,6 +117,14 @@ public class Connection {
         //open websocket
         mWs.connect();
     }
+
+    private String createFileURL(String data) {
+        String path = data;
+        System.out.println("filePath " + path);
+        //TODO get flask port from qrcode too
+        return  "http://" + ForegroundService.url + ":5000/get?f=" + path;
+    }
+
     public boolean isConnected() {
         return mWs.getReadyState() == ReadyState.OPEN;
     }
@@ -120,13 +136,36 @@ public class Connection {
             sendClipboard(data);
         } else if (type.compareTo("command") == 0) {
             sendCommand(data);
-        }
-        if (type.compareTo("info") == 0) {
+        }else if (type.compareTo("info") == 0) {
             getInfo(data);
         } else {
 
         }
 
+    }
+    public Connection(ClipboardManager clipBoard, URI uri, String type, Object o) {
+        this(clipBoard, uri);
+        while (!isConnected()) ;
+        if (type.compareTo("get_screenshot") == 0){
+            this.o=o;
+            getScreenshot();
+        }  else {
+
+        }
+
+    }
+
+    private void getScreenshot() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("type", "get_screenshot");
+            obj.put("data", " ");
+            Log.d("get_screenshot", "get_screenshot: " + obj.toString());
+            String msg = obj.toString();
+            mWs.send(msg);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getInfo(String command) {
@@ -176,5 +215,29 @@ public class Connection {
 
     public void setAsMain() {
         this.mainConnection = true;
+    }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

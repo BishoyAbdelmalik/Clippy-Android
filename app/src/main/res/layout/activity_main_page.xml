@@ -70,7 +70,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <Button
+                android:id="@+id/screenshot_page"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/view_screenshot" />
             <Button
                 android:id="@+id/media"
                 android:layout_width="match_parent"

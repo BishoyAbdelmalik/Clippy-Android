@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -95,6 +96,9 @@ public class ForegroundService extends Service {
 
     public static void sendCommand(ClipboardManager clipBoard, String command) {
         new Connection(clipBoard, getURI(url, port, "send"), "command", command);
+    }
+    public static void getScreenshot(ImageView img){
+        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
     }
 
     public static void getInfo(ClipboardManager clipBoard, String command) {
