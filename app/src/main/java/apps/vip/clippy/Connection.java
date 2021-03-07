@@ -36,8 +36,8 @@ public class Connection {
                         clipboardManager.setPrimaryClip(clipData);
                         String[] arr=data.trim().split("\\s+");
                         ArrayList<String> links=new ArrayList<>();
-                        for(String s:arr){
-                            if ( Patterns.WEB_URL.matcher(s).matches()){
+                        for(String s:arr) {
+                            if (Patterns.WEB_URL.matcher(s).matches()) {
                                 links.add(s);
                             }
                         }
