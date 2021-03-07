@@ -61,6 +61,7 @@ public class Connection {
                     } else if (type.compareTo("file_path") == 0) {
                         String path = data;
                         System.out.println("filePath " + path);
+                        //TODO get flask port from qrcode too
                         String url = "http://" + ForegroundService.url + ":5000/get?f=" + path;
                         new downloadFile(url, MainActivity.context);
 
