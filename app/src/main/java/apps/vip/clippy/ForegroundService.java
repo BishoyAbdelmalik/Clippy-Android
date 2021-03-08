@@ -28,6 +28,9 @@ public class ForegroundService extends Service {
     public static boolean connected = false;
     public static boolean started = false;
     public static Context context=null;
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -100,7 +103,9 @@ public class ForegroundService extends Service {
     public static void getScreenshot(ImageView img){
         new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
     }
-
+    public static void sendKeyboardKey(String key) {
+        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"),"keyboard_input",key);
+    }
     public static void getInfo(ClipboardManager clipBoard, String command) {
         new Connection(clipBoard, getURI(url, port, "send"), "info", command);
     }

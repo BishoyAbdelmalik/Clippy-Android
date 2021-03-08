@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.ReadyState;
@@ -139,8 +140,8 @@ public class Connection {
             sendCommand(data);
         }else if (type.compareTo("info") == 0) {
             getInfo(data);
-        } else {
-
+        }else if(type.compareTo("keyboard_input")==0){
+            sendKeyboardKey(data);
         }
 
     }
@@ -150,8 +151,6 @@ public class Connection {
         if (type.compareTo("get_screenshot") == 0){
             this.o=o;
             getScreenshot();
-        }  else {
-
         }
 
     }
@@ -188,6 +187,23 @@ public class Connection {
             obj.put("type", "command");
             obj.put("data", command);
             Log.d("send", "sendCommand: " + obj.toString());
+            String msg = obj.toString();
+            mWs.send(msg);
+            mWs.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void sendKeyboardKey(String key) {
+        if (!isConnected()){
+            Toast.makeText(MainActivity.context, "Connection Failed or still connecting", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("type", "keyboard_input");
+            obj.put("data", key);
+            Log.d("send", "sendKeyboard_input: " + obj.toString());
             String msg = obj.toString();
             mWs.send(msg);
             mWs.close();
