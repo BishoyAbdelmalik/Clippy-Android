@@ -70,9 +70,10 @@ public class Connection {
                         new downloadFile(createFileURL(data), MainActivity.context);
                     } else if(type.compareTo("file_screenshot") == 0) {
                         System.out.println("screenshot: "+data);
+                        screenshot_page.url=createFileURL(data);
                         if(o!=null){
                             new DownloadImageTask((ImageView) o)
-                                    .execute(createFileURL(data));
+                                    .execute(screenshot_page.url);
                         }
                     }else {
 

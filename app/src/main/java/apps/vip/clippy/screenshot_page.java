@@ -4,46 +4,51 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
 public class screenshot_page extends AppCompatActivity {
-    private ScaleGestureDetector mScaleGestureDetector;
-    private float mScaleFactor = 1.0f;
-    private  ImageView img;
+    TouchImageView img;
+    public static String url=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screenshot_page);
-        img=findViewById(R.id.screenshot);
+        img= new TouchImageView(this);
+        img.setMaxZoom(4f);
+
 
         ForegroundService.getScreenshot(img);
-        Button refresh=findViewById(R.id.refresh_screenshot);
-        refresh.setOnClickListener(v -> ForegroundService.getScreenshot(img));
 
-        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+        setContentView(img);
+
 
     }
-    // this redirects all touch events in the activity to the gesture detector
+    // create an action bar button
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return mScaleGestureDetector.onTouchEvent(event);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        getMenuInflater().inflate(R.menu.screenshot_actionbar, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        // when a scale gesture is detected, use it to resize the image
-        @Override
-        public boolean onScale(ScaleGestureDetector scaleGestureDetector){
-            mScaleFactor *= scaleGestureDetector.getScaleFactor();
-            img.setScaleX(mScaleFactor);
-            img.setScaleY(mScaleFactor);
-            return true;
+        switch (id){
+            case R.id.refresh:
+                ForegroundService.getScreenshot(img);
+                break;
+            case R.id.save:
+                if (url !=null)
+                    new downloadFile(url, MainActivity.context);
+                break;
         }
-
+        return super.onOptionsItemSelected(item);
     }
 
 }
