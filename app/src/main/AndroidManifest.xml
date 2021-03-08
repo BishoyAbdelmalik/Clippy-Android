@@ -10,7 +10,7 @@
         android:theme="@style/Theme.Clippy"
         android:usesCleartextTraffic="true">
         <activity android:name=".screenshot_page"
-            android:label="Screenshot Page">
+            android:label="PC Screenshot">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main_page" />
@@ -18,7 +18,7 @@
         <activity android:name=".KeyboardControl" />
         <activity android:name=".LinksPage" />
         <activity android:name=".media_control"
-            android:label="Media Control Page">
+            android:label="Media Controls">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main_page" />
