@@ -9,15 +9,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Clippy"
         android:usesCleartextTraffic="true">
-        <activity android:name=".screenshot_page"
+        <activity android:name=".RemoteControl"
+            android:label="Remote Control">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main_page" />
+        </activity>
+        <activity
+            android:name=".screenshot_page"
             android:label="PC Screenshot">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main_page" />
         </activity>
-        <activity android:name=".KeyboardControl" />
         <activity android:name=".LinksPage" />
-        <activity android:name=".media_control"
+        <activity
+            android:name=".media_control"
             android:label="Media Controls">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -37,10 +44,10 @@
             android:enabled="true"
             android:exported="true" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
