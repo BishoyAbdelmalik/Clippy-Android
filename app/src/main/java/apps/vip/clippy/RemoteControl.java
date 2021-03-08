@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class RemoteControl extends AppCompatActivity {
@@ -36,5 +37,31 @@ public class RemoteControl extends AppCompatActivity {
 
             }
         });
+        Button mouse_up=findViewById(R.id.mouse_up);
+        Button mouse_down=findViewById(R.id.mouse_down);
+        Button mouse_left=findViewById(R.id.mouse_left);
+        Button mouse_right=findViewById(R.id.mouse_right);
+        Button click=findViewById(R.id.click);
+        mouse_up.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("up");
+        });
+        mouse_down.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("down");
+
+
+        });
+        mouse_left.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("left");
+
+        });
+        mouse_right.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("right");
+
+        });
+        click.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("click");
+
+        });
+
     }
 }

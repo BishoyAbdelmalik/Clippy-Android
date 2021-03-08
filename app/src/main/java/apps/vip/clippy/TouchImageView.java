@@ -1,5 +1,6 @@
 package apps.vip.clippy;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.PointF;
@@ -11,6 +12,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 
+@SuppressLint("AppCompatCustomView")
 public class TouchImageView extends ImageView {
     Matrix matrix;
     // We can be in one of these 3 states

@@ -31,6 +31,7 @@ public class ForegroundService extends Service {
 
 
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -96,7 +97,10 @@ public class ForegroundService extends Service {
         }
         return uri;
     }
+    public static void sendMouseCommand(String command) {
+        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "mouse_input", command);
 
+    }
     public static void sendCommand(ClipboardManager clipBoard, String command) {
         new Connection(clipBoard, getURI(url, port, "send"), "command", command);
     }

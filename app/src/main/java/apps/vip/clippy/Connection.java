@@ -141,10 +141,15 @@ public class Connection {
         }else if (type.compareTo("info") == 0) {
             getInfo(data);
         }else if(type.compareTo("keyboard_input")==0){
-            sendKeyboardKey(data);
+            sendRemoteControlCommand(type,data);
+        }else if(type.compareTo("mouse_input")==0){
+            sendRemoteControlCommand(type,data);
         }
 
     }
+
+
+
     public Connection(ClipboardManager clipBoard, URI uri, String type, Object o) {
         this(clipBoard, uri);
         while (!isConnected()) ;
@@ -194,15 +199,16 @@ public class Connection {
             e.printStackTrace();
         }
     }
-    private void sendKeyboardKey(String key) {
+
+    private void sendRemoteControlCommand(String type,String data) {
         if (!isConnected()){
             Toast.makeText(MainActivity.context, "Connection Failed or still connecting", Toast.LENGTH_SHORT).show();
             return;
         }
         JSONObject obj = new JSONObject();
         try {
-            obj.put("type", "keyboard_input");
-            obj.put("data", key);
+            obj.put("type", type);
+            obj.put("data", data);
             Log.d("send", "sendKeyboard_input: " + obj.toString());
             String msg = obj.toString();
             mWs.send(msg);
