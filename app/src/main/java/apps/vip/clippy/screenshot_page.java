@@ -2,48 +2,48 @@ package apps.vip.clippy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.widget.Button;
 import android.widget.ImageView;
 
-import java.io.InputStream;
 
 public class screenshot_page extends AppCompatActivity {
-
+    private ScaleGestureDetector mScaleGestureDetector;
+    private float mScaleFactor = 1.0f;
+    private  ImageView img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screenshot_page);
-        // show The Image in a ImageView
-//        new DownloadImageTask((ImageView) findViewById(R.id.screenshot))
-//                .execute("http://192.168.0.40:5000/get?f=D:\\OneDrive\\COMP\\COMP%20490\\clippy\\Clippy-Server\\upload\\my_screenshot.png");
-        ForegroundService.getScreenshot((ImageView) findViewById(R.id.screenshot));
+        img=findViewById(R.id.screenshot);
+
+        ForegroundService.getScreenshot(img);
+        Button refresh=findViewById(R.id.refresh_screenshot);
+        refresh.setOnClickListener(v -> ForegroundService.getScreenshot(img));
+
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+
     }
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
+    // this redirects all touch events in the activity to the gesture detector
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mScaleGestureDetector.onTouchEvent(event);
     }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+        // when a scale gesture is detected, use it to resize the image
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector){
+            mScaleFactor *= scaleGestureDetector.getScaleFactor();
+            img.setScaleX(mScaleFactor);
+            img.setScaleY(mScaleFactor);
+            return true;
+        }
+
+    }
+
 }
