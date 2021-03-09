@@ -9,4 +9,5 @@
     <string name="send_a_file">Send a file</string>
     <string name="view_screenshot">View Screenshot</string>
     <string name="remote_control">Remote Control</string>
+    <string name="enter_keyboard_input_below">Enter Keyboard Input below</string>
 </resources>

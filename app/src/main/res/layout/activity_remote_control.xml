@@ -41,10 +41,26 @@
         android:layout_height="50dp"
         android:id="@+id/mouse_down"
         android:background="@drawable/ic_baseline_arrow_drop_down"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/enter_keyboard_input_below" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/darker_gray" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:background="@drawable/edittextcustom"
         android:id="@+id/keyboard_input"/>
 </LinearLayout>

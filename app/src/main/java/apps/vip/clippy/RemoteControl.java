@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -15,6 +17,14 @@ public class RemoteControl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remote_control);
         EditText keyboard_input=findViewById(R.id.keyboard_input);
+        keyboard_input.setOnKeyListener((v, keyCode, event) -> {
+            //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
+            if(keyCode == KeyEvent.KEYCODE_DEL && event.getAction()==KeyEvent.ACTION_UP) {
+                //this is for backspace
+                ForegroundService.sendKeyboardKey("backspace");
+            }
+            return false;
+        });
         keyboard_input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
