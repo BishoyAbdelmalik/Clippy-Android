@@ -74,4 +74,22 @@ public class RemoteControl extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ForegroundService.closeRemoteControlConnection();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ForegroundService.closeRemoteControlConnection();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ForegroundService.closeRemoteControlConnection();
+    }
 }

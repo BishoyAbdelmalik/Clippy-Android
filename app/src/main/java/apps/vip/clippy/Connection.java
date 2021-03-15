@@ -199,7 +199,7 @@ public class Connection {
         }
     }
 
-    private void sendRemoteControlCommand(String type,String data) {
+    public void sendRemoteControlCommand(String type,String data) {
         if (!isConnected()){
             Toast.makeText(MainActivity.context, "Connection Failed or still connecting", Toast.LENGTH_SHORT).show();
             return;
@@ -211,7 +211,7 @@ public class Connection {
             Log.d("send", "sendKeyboard_input: " + obj.toString());
             String msg = obj.toString();
             mWs.send(msg);
-            mWs.close();
+//            mWs.close();
         } catch (JSONException e) {
             e.printStackTrace();
         }
