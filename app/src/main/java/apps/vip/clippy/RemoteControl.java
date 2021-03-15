@@ -2,16 +2,17 @@ package apps.vip.clippy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class RemoteControl extends AppCompatActivity {
-    Connection conn=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,8 @@ public class RemoteControl extends AppCompatActivity {
 
             }
         });
+        Vibrator vibe = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
         Button mouse_up=findViewById(R.id.mouse_up);
         Button mouse_down=findViewById(R.id.mouse_down);
         Button mouse_left=findViewById(R.id.mouse_left);
@@ -54,22 +57,28 @@ public class RemoteControl extends AppCompatActivity {
         Button click=findViewById(R.id.click);
         mouse_up.setOnClickListener(v -> {
             ForegroundService.sendMouseCommand("up");
+            vibe.vibrate(1);
+
         });
         mouse_down.setOnClickListener(v -> {
             ForegroundService.sendMouseCommand("down");
+            vibe.vibrate(1);
 
 
         });
         mouse_left.setOnClickListener(v -> {
             ForegroundService.sendMouseCommand("left");
+            vibe.vibrate(1);
 
         });
         mouse_right.setOnClickListener(v -> {
             ForegroundService.sendMouseCommand("right");
+            vibe.vibrate(1);
 
         });
         click.setOnClickListener(v -> {
             ForegroundService.sendMouseCommand("click");
+            vibe.vibrate(1);
 
         });
 
