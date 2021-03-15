@@ -88,7 +88,7 @@ public class main_page extends AppCompatActivity {
         });
         Button sendAFile=findViewById(R.id.send_file);
         sendAFile.setOnClickListener(v -> {
-            String url="http://"+ForegroundService.url+":5000/static/upload.html";
+            String url="http://"+ForegroundService.url+":"+ForegroundService.flask_port+"/static/upload.html";
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.launchUrl(context, Uri.parse(url));

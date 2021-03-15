@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("qr " + jsonData.get("port"));
                     ip = String.valueOf(jsonData.get("ip"));
                     port = String.valueOf(jsonData.get("port"));
+                    ForegroundService.flask_port=String.valueOf(jsonData.get("flask_port"));
                     scan = true;
                 } catch (JSONException e) {
                     e.printStackTrace();

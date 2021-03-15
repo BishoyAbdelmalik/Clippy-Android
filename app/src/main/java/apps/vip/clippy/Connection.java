@@ -123,8 +123,7 @@ public class Connection {
     private String createFileURL(String data) {
         String path = data;
         System.out.println("filePath " + path);
-        //TODO get flask port from qrcode too
-        return  "http://" + ForegroundService.url + ":5000/get?f=" + path;
+        return  "http://" + ForegroundService.url + ":"+ForegroundService.flask_port+"/get?f=" + path;
     }
 
     public boolean isConnected() {
