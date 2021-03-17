@@ -63,6 +63,7 @@ public class Connection {
                                     media_control.playingTxt.setText(title);
                                 }
                                 media_control.playingTXT = title;
+                                media_control.thumbnailUrl = "http://192.168.0.19:5000" + thumb;
                                 System.out.println("playing title from connection " + title);
                             }
                         }
