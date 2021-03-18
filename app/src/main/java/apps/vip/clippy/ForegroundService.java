@@ -25,6 +25,7 @@ public class ForegroundService extends Service {
     public static Connection main = null;
     public static String url = "192.168.0.40";
     public static String port = "8765";
+    public static String flask_port = "5000";
     public static boolean connected = false;
     public static boolean started = false;
     public static Context context=null;
@@ -97,19 +98,39 @@ public class ForegroundService extends Service {
         }
         return uri;
     }
-    public static void sendMouseCommand(String command) {
-        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "mouse_input", command);
 
-    }
     public static void sendCommand(ClipboardManager clipBoard, String command) {
         new Connection(clipBoard, getURI(url, port, "send"), "command", command);
     }
     public static void getScreenshot(ImageView img){
         new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
     }
-    public static void sendKeyboardKey(String key) {
-        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"),"keyboard_input",key);
+
+    private static  Connection remoteControlConnection=null;
+    public static void sendMouseCommand(String command) {
+        if (remoteControlConnection==null || !remoteControlConnection.isConnected()) {
+            remoteControlConnection=new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "mouse_input", command);
+        }else {
+            remoteControlConnection.sendRemoteControlCommand("mouse_input", command);
+
+        }
+
     }
+    public static void sendKeyboardKey(String key) {
+        if (remoteControlConnection==null || !remoteControlConnection.isConnected()){
+            remoteControlConnection=new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"),"keyboard_input",key);
+        }else {
+            remoteControlConnection.sendRemoteControlCommand("keyboard_input", key);
+        }
+    }
+    public static void closeRemoteControlConnection(){
+        System.out.println("close remote control connection");
+        if (remoteControlConnection!=null && remoteControlConnection.isConnected()) {
+            remoteControlConnection.close();
+            remoteControlConnection=null;
+        }
+
+        }
     public static void getInfo(ClipboardManager clipBoard, String command) {
         new Connection(clipBoard, getURI(url, port, "send"), "info", command);
     }
