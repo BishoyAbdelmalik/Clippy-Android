@@ -113,8 +113,8 @@ public class RemoteControl extends AppCompatActivity {
                         distanceX=Math.round(distanceX);
                         distanceY=Math.round(distanceY);
                         Log.d(DEBUG_TAG, "x "+distanceX+" y "+ distanceY);
-                        originalX[0] =x;
-                        originalY[0] =y;
+                        originalX[0] =Math.round(x);
+                        originalY[0] =Math.round(y);
                         if(Math.abs(distanceX)>2 && Math.abs(distanceY)>2){
                             ForegroundService.sendMouseCommand(distanceX+","+distanceY);
                         }
