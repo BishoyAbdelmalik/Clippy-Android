@@ -63,7 +63,10 @@ public class Connection {
                                     media_control.playingTxt.setText(title);
                                 }
                                 media_control.playingTXT = title;
-                                media_control.thumbnailUrl = "http://" + ForegroundService.url + ":5000" + thumb;
+                                media_control.thumbnailUrl = "http://" + ForegroundService.url + ":"+ForegroundService.flask_port + thumb;
+                                if(media_control.playingThumb !=null) {
+                                    setMediaThumb(media_control.thumbnailUrl);
+                                }
                                 System.out.println("playing title from connection " + title);
                             }
                         }
@@ -119,6 +122,17 @@ public class Connection {
         };
         //open websocket
         mWs.connect();
+    }
+
+    public void setMediaThumb(String thumbnailUrl) {
+        try {
+            // Using an Async solution from SO
+            // https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
+            new DownloadImageTask((ImageView) media_control.playingThumb)
+                    .execute(thumbnailUrl);
+        } catch (Exception e) {
+            System.err.println("lmao get fukd user");
+        }
     }
 
     private String createFileURL(String data) {
@@ -239,7 +253,7 @@ public class Connection {
     public void setAsMain() {
         this.mainConnection = true;
     }
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
