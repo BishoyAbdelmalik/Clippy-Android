@@ -18,10 +18,10 @@
 
         <ImageView
             android:id="@+id/playingThumb"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:src="@android:drawable/sym_def_app_icon"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             android:layout_margin="10dp" />
 
         <LinearLayout
