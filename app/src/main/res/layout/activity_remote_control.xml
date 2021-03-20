@@ -7,68 +7,194 @@
     tools:context=".RemoteControl"
     android:orientation="vertical"
     android:gravity="center_horizontal">
-
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/mouse_up"
-        android:background="@drawable/ic_baseline_arrow_drop_up"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/mouse_control" />
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/mode_switch"
+            android:text="@string/trackpad_mode"
+            android:textAllCaps="false"
+            android:textAlignment="textEnd"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            />
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/touch_control"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="10"
+            android:layout_height="300dp"
+            android:id="@+id/touch"
+            android:background="@android:color/darker_gray"/>
+        <!-- TODO add scroll-->
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </Button>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+
         android:gravity="center">
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mouse_left"
-            android:background="@drawable/ic_baseline_arrow_left" />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp"
+            android:id="@+id/leftClick"
+            android:layout_margin="10dp"
+            android:text="@string/left_click"
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            />
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OK"
-            android:id="@+id/click"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mouse_right"
-            android:background="@drawable/ic_baseline_arrow_right" />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:layout_height="60dp"
+            android:id="@+id/rightClick"
+            android:layout_margin="10dp"
+            android:text="@string/right_click"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            />
+
     </LinearLayout>
 
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/mouse_down"
-        android:background="@drawable/ic_baseline_arrow_drop_down"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/arrows_control"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/mouse_up"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/up"
+            android:textSize="50dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+
+                android:id="@+id/mouse_left"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/left"
+                android:textSize="50dp"
+
+                />
+
+            <Button
+                android:id="@+id/click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK" />
+
+            <Button
+
+                android:id="@+id/mouse_right"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/right"
+                android:textSize="50dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/mouse_down"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/down"
+            android:textSize="50dp" />
+
+    </LinearLayout>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="30dp"
         android:layout_marginBottom="5dp"
-        android:text="@string/enter_keyboard_input_below" />
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/keyboard_control" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@android:color/darker_gray" />
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/edittextcustom"
-        android:id="@+id/keyboard_input"/>
+        android:hint="@string/enter_keyboard_input">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/touch"
-        android:background="@android:color/darker_gray"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/keyboard_input" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+<!--    <Spinner-->
+<!--        android:id="@+id/spinner"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="5dp"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--        />-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="5dp"-->
+<!--        android:id="@+id/dropdown"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--        >-->
+
+<!--        <AutoCompleteTextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="none"-->
+<!--            />-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
 </LinearLayout>

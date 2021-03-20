@@ -3,24 +3,60 @@ package apps.vip.clippy;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MotionEventCompat;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 public class RemoteControl extends AppCompatActivity {
+    boolean touch=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remote_control);
+//        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+//// Create an ArrayAdapter using the string array and a default spinner layout
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.remote_control_dropdown, android.R.layout.simple_spinner_item);
+//// Specify the layout to use when the list of choices appears
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//// Apply the adapter to the spinner
+//        spinner.setAdapter(adapter);
+
+
+
+        LinearLayout arrow_control = findViewById(R.id.arrows_control);
+        LinearLayout touch_control = findViewById(R.id.touch_control);
+        arrow_control.setVisibility(View.GONE);
+        touch_control.setVisibility(View.VISIBLE);
+        Button mode_switch=findViewById(R.id.mode_switch);
+        mode_switch.setText(R.string.trackpad_mode);
+        touch=true;
+        mode_switch.setOnClickListener((v) -> {
+            if (touch){
+                touch=false;
+                touch_control.setVisibility(View.GONE);
+                arrow_control.setVisibility(View.VISIBLE);
+                mode_switch.setText(R.string.arrows_mode);
+            }else {
+                touch=true;
+                mode_switch.setText(R.string.trackpad_mode);
+                arrow_control.setVisibility(View.GONE);
+                touch_control.setVisibility(View.VISIBLE);
+
+            }
+        });
         EditText keyboard_input=findViewById(R.id.keyboard_input);
         keyboard_input.setOnKeyListener((v, keyCode, event) -> {
             //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
@@ -59,6 +95,8 @@ public class RemoteControl extends AppCompatActivity {
         Button mouse_left=findViewById(R.id.mouse_left);
         Button mouse_right=findViewById(R.id.mouse_right);
         Button click=findViewById(R.id.click);
+        Button leftClick=findViewById(R.id.leftClick);
+        Button rightClick=findViewById(R.id.rightClick);
         mouse_up.setOnClickListener(v -> {
             ForegroundService.sendMouseCommand("up");
             vibe.vibrate(1);
@@ -80,11 +118,11 @@ public class RemoteControl extends AppCompatActivity {
             vibe.vibrate(1);
 
         });
-        click.setOnClickListener(v -> {
-            ForegroundService.sendMouseCommand("click");
-            vibe.vibrate(1);
 
-        });
+        click.setOnClickListener(v -> leftClick(v,vibe));
+        leftClick.setOnClickListener(v -> leftClick(v,vibe));
+        rightClick.setOnClickListener(v -> rightClick(v,vibe));
+
         View touch =findViewById(R.id.touch);
         float[] originalX = {0};
         float[] originalY = {0};
@@ -145,6 +183,19 @@ public class RemoteControl extends AppCompatActivity {
             }
         });
 
+    }
+
+
+
+
+    private void rightClick(View v, Vibrator vibe) {
+        ForegroundService.sendMouseCommand("right_click");
+        vibe.vibrate(1);
+    }
+
+    private void leftClick(View v, Vibrator vibe) {
+        ForegroundService.sendMouseCommand("click");
+        vibe.vibrate(1);
     }
 
     @Override

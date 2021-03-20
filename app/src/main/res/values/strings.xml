@@ -9,5 +9,22 @@
     <string name="send_a_file">Send a file</string>
     <string name="view_screenshot">View Screenshot</string>
     <string name="remote_control">Remote Control</string>
-    <string name="enter_keyboard_input_below">Enter Keyboard Input below</string>
+    <string name="enter_keyboard_input">Enter Keyboard Input here</string>
+    <string name="mouse_control">Mouse Control Mode</string>
+    <string name="keyboard_control">Keyboard Controls</string>
+    <string name="right_click">Right Click</string>
+    <string name="left_click">Left Click</string>
+    <string name="left"><![CDATA[◄]]></string>
+    <string name="right"><![CDATA[►]]></string>
+    <string name="up"><![CDATA[▲]]></string>
+    <string name="down"><![CDATA[▼]]></string>
+    <string name="trackpad_mode">Trackpad Mode</string>
+    <string name="arrows_mode">Arrows Mode</string>
+    <string-array name="remote_control_dropdown">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+    </string-array>
+
 </resources>
