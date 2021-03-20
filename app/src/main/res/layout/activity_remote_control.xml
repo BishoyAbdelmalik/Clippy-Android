@@ -46,13 +46,40 @@
             android:layout_height="300dp"
             android:id="@+id/touch"
             android:background="@android:color/darker_gray"/>
-        <!-- TODO add scroll-->
-        <Button
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <Button
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/up"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scroll_up"
+                />
 
-        </Button>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="208dp"
+                android:gravity="fill_vertical"
+                android:layout_gravity="center_horizontal"
+                android:rotation="90"
+                android:id="@+id/scroll_text"
+                android:text="Scroll"
+                android:textSize="10dp"
+                />
+
+            <Button
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/down"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scroll_down"
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -142,6 +169,34 @@
             android:layout_height="wrap_content"
             android:text="@string/down"
             android:textSize="50dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:gravity="center">
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:id="@+id/Scroll_Up_full_button"
+                android:layout_margin="10dp"
+                android:text="Scroll Up"
+                android:textAllCaps="false"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                />
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:layout_height="60dp"
+                android:id="@+id/scroll_down_full_button"
+                android:layout_margin="10dp"
+                android:text="Scroll Down"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -149,6 +204,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -157,7 +213,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@android:color/darker_gray" />

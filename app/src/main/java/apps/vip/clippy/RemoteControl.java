@@ -1,26 +1,34 @@
 package apps.vip.clippy;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MotionEventCompat;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 public class RemoteControl extends AppCompatActivity {
     boolean touch=true;
-
+    int scrollSpeed=100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,13 +42,35 @@ public class RemoteControl extends AppCompatActivity {
 //// Apply the adapter to the spinner
 //        spinner.setAdapter(adapter);
 
-
+        TextView scroll_text=findViewById(R.id.scroll_text);
+        scroll_text.setOnClickListener(v -> setScrollSpeed());
+        Vibrator vibe = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         LinearLayout arrow_control = findViewById(R.id.arrows_control);
         LinearLayout touch_control = findViewById(R.id.touch_control);
         arrow_control.setVisibility(View.GONE);
         touch_control.setVisibility(View.VISIBLE);
         Button mode_switch=findViewById(R.id.mode_switch);
+        Button scroll_up = findViewById(R.id.scroll_up);
+        Button scroll_Up_full_button = findViewById(R.id.Scroll_Up_full_button);
+        Button scroll_down_full_button = findViewById(R.id.scroll_down_full_button);
+        Button scroll_down = findViewById(R.id.scroll_down);
+        scroll_up.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("scroll,"+scrollSpeed);
+            vibe.vibrate(1);
+        });
+        scroll_Up_full_button.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("scroll,"+scrollSpeed);
+            vibe.vibrate(1);
+        });
+        scroll_down.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("scroll,"+(-1*scrollSpeed));
+            vibe.vibrate(1);
+        });
+        scroll_down_full_button.setOnClickListener(v -> {
+            ForegroundService.sendMouseCommand("scroll,"+(-1*scrollSpeed));
+            vibe.vibrate(1);
+        });
         mode_switch.setText(R.string.trackpad_mode);
         touch=true;
         mode_switch.setOnClickListener((v) -> {
@@ -88,7 +118,6 @@ public class RemoteControl extends AppCompatActivity {
 
             }
         });
-        Vibrator vibe = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         Button mouse_up=findViewById(R.id.mouse_up);
         Button mouse_down=findViewById(R.id.mouse_down);
@@ -122,6 +151,7 @@ public class RemoteControl extends AppCompatActivity {
         click.setOnClickListener(v -> leftClick(v,vibe));
         leftClick.setOnClickListener(v -> leftClick(v,vibe));
         rightClick.setOnClickListener(v -> rightClick(v,vibe));
+
 
         View touch =findViewById(R.id.touch);
         float[] originalX = {0};
@@ -185,7 +215,24 @@ public class RemoteControl extends AppCompatActivity {
 
     }
 
+    private void setScrollSpeed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Set Scroll Speed");
 
+        // Set up the input
+        EditText input = new EditText(this);
+        if(input.getParent() != null) {
+            ((ViewGroup)input.getParent()).removeView(input);
+        }
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(input);
+        // Set up the buttons
+        builder.setPositiveButton("Save", (dialog, which) -> scrollSpeed=Integer.parseInt(input.getText().toString()));
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        input.setText(String.valueOf(scrollSpeed));
+
+        builder.show();
+    }
 
 
     private void rightClick(View v, Vibrator vibe) {
@@ -215,4 +262,27 @@ public class RemoteControl extends AppCompatActivity {
         super.onStop();
         ForegroundService.closeRemoteControlConnection();
     }
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        getMenuInflater().inflate(R.menu.remote_control_page_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.set_scroll_speed:
+                setScrollSpeed();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
