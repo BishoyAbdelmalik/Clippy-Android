@@ -235,6 +235,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:id="@+id/Browser_Controls"
+                android:text="Browser Controls"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/start"
                 android:layout_margin="10dp"
                 android:text="Start"
@@ -244,14 +252,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Start"
+                android:id="@+id/capslock"
+                android:text="Capslock"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Start"
+                android:id="@+id/media_controls"
+                android:text="Open Media Controls"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
         </LinearLayout>

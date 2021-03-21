@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/browser_open"
+        android:title="Open Browser" />
+    <item android:id="@+id/browser_back"
+        android:title="Back" />
+    <item android:id="@+id/browser_forward"
+        android:title="Forward" />
+
+    <item android:id="@+id/browser_home"
+        android:title="Home" />
+    <item android:id="@+id/browser_refresh"
+        android:title="Refresh" />
+    <item android:id="@+id/browser_search"
+        android:title="Search" />
+    <item android:id="@+id/browser_address"
+        android:title="Edit Browser Address" />
+    <item android:id="@+id/ctrl_T"
+        android:title="New Tab" />
+    <item android:id="@+id/ctrl_W"
+        android:title="Close Current Tab" />
+    <item android:id="@+id/ctrl_shift_T"
+        android:title="Open recently closed tab" />
+
+    <item android:id="@+id/cancel"
+        android:title="Cancel" />
+</menu>

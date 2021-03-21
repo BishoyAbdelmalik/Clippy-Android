@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MotionEventCompat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.Editable;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -34,19 +37,12 @@ public class RemoteControl extends AppCompatActivity {
     boolean touch=true;
     int scrollSpeed=100;
     Vibrator vibe;
+    EditText keyboard_input;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remote_control);
-//        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-//// Create an ArrayAdapter using the string array and a default spinner layout
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.remote_control_dropdown, android.R.layout.simple_spinner_item);
-//// Specify the layout to use when the list of choices appears
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//// Apply the adapter to the spinner
-//        spinner.setAdapter(adapter);
 
         TextView scroll_text=findViewById(R.id.scroll_text);
         scroll_text.setOnClickListener(v -> setScrollSpeed());
@@ -93,7 +89,7 @@ public class RemoteControl extends AppCompatActivity {
 
             }
         });
-        EditText keyboard_input=findViewById(R.id.keyboard_input);
+        keyboard_input=findViewById(R.id.keyboard_input);
         keyboard_input.setOnKeyListener((v, keyCode, event) -> {
             //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
             if(keyCode == KeyEvent.KEYCODE_DEL && event.getAction()==KeyEvent.ACTION_UP) {
@@ -210,22 +206,59 @@ public class RemoteControl extends AppCompatActivity {
         hotkeys.setOnClickListener(v->{
             registerForContextMenu(hotkeys);
             openContextMenu(v);
+            keyboard_input.clearFocus();
+
         });
         Button start_btn=findViewById(R.id.start);
         start_btn.setOnClickListener(v -> {
             ForegroundService.sendKeyboardKey("win");
             vibe.vibrate(1);
         });
-
+        Button capslock=findViewById(R.id.capslock);
+        capslock.setOnClickListener(v -> {
+            ForegroundService.sendKeyboardKey("capslock");
+            vibe.vibrate(1);
+        });
+        Button Browser_Controls=findViewById(R.id.Browser_Controls);
+        Browser_Controls.setOnClickListener(v -> {
+            registerForContextMenu(Browser_Controls);
+            openContextMenu(v);
+            keyboard_input.clearFocus();
+        });
+        keyboard_input.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                showKeyboard();
+            }else{
+                closeKeyboard();
+            }
+        });
+        findViewById(R.id.media_controls).setOnClickListener(v -> {
+            startActivity(new Intent(this,media_control.class));
+        });
     }
 
-
+    public void showKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+    public void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.hotkeys_menu, menu);
-        menu.setHeaderTitle("Send Shortcuts:");
+        if(v.getId()==R.id.hotkeys){
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.hotkeys_menu, menu);
+            menu.setHeaderTitle("Send Shortcuts:");
+        }else if(v.getId() == R.id.Browser_Controls){
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.browser_controls_menu, menu);
+            menu.setHeaderTitle("Browser Controls:");
+
+        }
+
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -255,8 +288,46 @@ public class RemoteControl extends AppCompatActivity {
                 ForegroundService.sendKeyboardKey("hotkey,"+"ctrl,w");
                 vibe.vibrate(1);
                 break;
+            case R.id.browser_open:
+                ForegroundService.sendKeyboardKey("browseropen");
+                vibe.vibrate(1);
+                ForegroundService.sendKeyboardKey("hotkey,"+"alt,d");
+                keyboard_input.requestFocus();
+                break;
+
+            case R.id.browser_back:
+                ForegroundService.sendKeyboardKey("browserback");
+                vibe.vibrate(1);
+                break;
+            case R.id.browser_forward:
+                ForegroundService.sendKeyboardKey("browserforward");
+                vibe.vibrate(1);
+                break;
+            case R.id.browser_home:
+                ForegroundService.sendKeyboardKey("browserhome");
+                vibe.vibrate(1);
+                break;
+            case R.id.browser_refresh:
+                ForegroundService.sendKeyboardKey("browserrefresh");
+                vibe.vibrate(1);
+                break;
+            case R.id.browser_search:
+                ForegroundService.sendKeyboardKey("browsersearch");
+                vibe.vibrate(1);
+                keyboard_input.requestFocus();
+                break;
+            case R.id.browser_address:
+                ForegroundService.sendKeyboardKey("hotkey,"+"alt,d");
+                vibe.vibrate(1);
+                keyboard_input.requestFocus();
+
+
+                break;
+
             case R.id.cancel:
                 break;
+            default:
+                Toast.makeText(this,"no function",Toast.LENGTH_LONG).show();
 
         }
         return true;

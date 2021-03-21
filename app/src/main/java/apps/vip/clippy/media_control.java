@@ -1,18 +1,22 @@
 package apps.vip.clippy;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ActionBar;
 import android.content.ClipboardManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Objects;
 
 
 public class media_control extends AppCompatActivity {
@@ -57,6 +61,13 @@ public class media_control extends AppCompatActivity {
             ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "volumeMute");
             vibe.vibrate(1);
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId()==android.R.id.home) {
+            finish();
+        }
+        return true;
     }
 }
 
