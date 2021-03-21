@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MotionEventCompat;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -11,8 +12,10 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,10 +28,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RemoteControl extends AppCompatActivity {
     boolean touch=true;
     int scrollSpeed=100;
+    Vibrator vibe;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +50,7 @@ public class RemoteControl extends AppCompatActivity {
 
         TextView scroll_text=findViewById(R.id.scroll_text);
         scroll_text.setOnClickListener(v -> setScrollSpeed());
-        Vibrator vibe = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        vibe = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         LinearLayout arrow_control = findViewById(R.id.arrows_control);
         LinearLayout touch_control = findViewById(R.id.touch_control);
@@ -156,63 +162,104 @@ public class RemoteControl extends AppCompatActivity {
         View touch =findViewById(R.id.touch);
         float[] originalX = {0};
         float[] originalY = {0};
-        touch.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // ... Respond to touch events
-                System.out.println(event);
-                int action = MotionEventCompat.getActionMasked(event);
+        touch.setOnTouchListener((v, event) -> {
+            // ... Respond to touch events
+            System.out.println(event);
+            int action = MotionEventCompat.getActionMasked(event);
 
-                String DEBUG_TAG = "touch";
-                switch (action) {
-                    case (MotionEvent.ACTION_DOWN):
-                        Log.d(DEBUG_TAG, "Action was DOWN");
-                        Log.d(DEBUG_TAG, "start x "+event.getX()+" y "+ event.getY());
+            String DEBUG_TAG = "touch";
+            switch (action) {
+                case (MotionEvent.ACTION_DOWN):
+                    Log.d(DEBUG_TAG, "Action was DOWN");
+                    Log.d(DEBUG_TAG, "start x "+event.getX()+" y "+ event.getY());
 
-                        originalX[0] =event.getX();
-                        originalY[0] =event.getY();
-                        return true;
-                    case (MotionEvent.ACTION_MOVE):
-                        Log.d(DEBUG_TAG, "Action was MOVE");
-                        float x =event.getX();
-                        float y=event.getY();
-                        float distanceX=x-originalX[0];
-                        float distanceY=y-originalY[0];
-                        distanceX=Math.round(distanceX);
-                        distanceY=Math.round(distanceY);
-                        Log.d(DEBUG_TAG, "x "+distanceX+" y "+ distanceY);
-                        originalX[0] =Math.round(x);
-                        originalY[0] =Math.round(y);
-                        if(Math.abs(distanceX)>2 && Math.abs(distanceY)>2){
-                            ForegroundService.sendMouseCommand(distanceX+","+distanceY);
-                        }
+                    originalX[0] =event.getX();
+                    originalY[0] =event.getY();
+                    return true;
+                case (MotionEvent.ACTION_MOVE):
+                    Log.d(DEBUG_TAG, "Action was MOVE");
+                    float x =event.getX();
+                    float y=event.getY();
+                    float distanceX=x-originalX[0];
+                    float distanceY=y-originalY[0];
+                    distanceX=Math.round(distanceX);
+                    distanceY=Math.round(distanceY);
+                    Log.d(DEBUG_TAG, "x "+distanceX+" y "+ distanceY);
+                    originalX[0] =Math.round(x);
+                    originalY[0] =Math.round(y);
+                    if(Math.abs(distanceX)>2 && Math.abs(distanceY)>2){
+                        ForegroundService.sendMouseCommand(distanceX+","+distanceY);
+                    }
 
-                        return true;
-                    case (MotionEvent.ACTION_UP):
-                        Log.d(DEBUG_TAG, "Action was UP");
-//                        float x =event.getX();
-//                        float y=event.getY();
-//                        float distanceX=x-originalX[0];
-//                        float distanceY=y-originalY[0];
-//                        Log.d(DEBUG_TAG, "x "+distanceX+" y "+ distanceY);
-//                        originalX[0] =x;
-//                        originalY[0] =y;
-//                        ForegroundService.sendMouseCommand(distanceX+","+distanceY);
-
-                        return true;
-                    case (MotionEvent.ACTION_CANCEL):
-                        Log.d(DEBUG_TAG, "Action was CANCEL");
-                        return true;
-                    case (MotionEvent.ACTION_OUTSIDE):
-                        Log.d(DEBUG_TAG, "Movement occurred outside bounds " +
-                                "of current screen element");
-                        return true;
-                    default:
-                        return true;
-                }
+                    return true;
+                case (MotionEvent.ACTION_UP):
+                    Log.d(DEBUG_TAG, "Action was UP");
+                    return true;
+                case (MotionEvent.ACTION_CANCEL):
+                    Log.d(DEBUG_TAG, "Action was CANCEL");
+                    return true;
+                case (MotionEvent.ACTION_OUTSIDE):
+                    Log.d(DEBUG_TAG, "Movement occurred outside bounds " +
+                            "of current screen element");
+                    return true;
+                default:
+                    return true;
             }
         });
+        Button hotkeys=findViewById(R.id.hotkeys);
+        hotkeys.setOnClickListener(v->{
+            registerForContextMenu(hotkeys);
+            openContextMenu(v);
+        });
+        Button start_btn=findViewById(R.id.start);
+        start_btn.setOnClickListener(v -> {
+            ForegroundService.sendKeyboardKey("win");
+            vibe.vibrate(1);
+        });
 
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.hotkeys_menu, menu);
+        menu.setHeaderTitle("Send Shortcuts:");
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.ctrl_shift_esc:
+                ForegroundService.sendKeyboardKey("hotkey,"+"ctrl,shift,esc");
+                vibe.vibrate(1);
+                break;
+            case R.id.start_tab:
+                ForegroundService.sendKeyboardKey("hotkey,"+"win,tab");
+                   vibe.vibrate(1);
+                break;
+            case R.id.alt_f4:
+                ForegroundService.sendKeyboardKey("hotkey,"+"alt,f4");
+                vibe.vibrate(1);
+                break;
+            case R.id.ctrl_shift_T:
+                ForegroundService.sendKeyboardKey("hotkey,"+"ctrl,shift,t");
+                vibe.vibrate(1);
+                break;
+            case R.id.ctrl_T:
+                ForegroundService.sendKeyboardKey("hotkey,"+"ctrl,t");
+                vibe.vibrate(1);
+                break;
+            case R.id.ctrl_W:
+                ForegroundService.sendKeyboardKey("hotkey,"+"ctrl,w");
+                vibe.vibrate(1);
+                break;
+            case R.id.cancel:
+                break;
+
+        }
+        return true;
     }
 
     private void setScrollSpeed() {

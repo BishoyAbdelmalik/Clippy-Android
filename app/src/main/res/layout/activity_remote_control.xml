@@ -216,6 +216,47 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@android:color/darker_gray" />
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/hotkeys"
+                android:layout_margin="10dp"
+                android:text="Send Shortcuts"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/start"
+                android:layout_margin="10dp"
+                android:text="Start"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Start"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Start"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                />
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -228,28 +269,5 @@
             android:layout_height="wrap_content"
             android:id="@+id/keyboard_input" />
     </com.google.android.material.textfield.TextInputLayout>
-
-<!--    <Spinner-->
-<!--        android:id="@+id/spinner"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="5dp"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
-<!--        />-->
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="5dp"-->
-<!--        android:id="@+id/dropdown"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
-<!--        >-->
-
-<!--        <AutoCompleteTextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:inputType="none"-->
-<!--            />-->
-
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
 </LinearLayout>

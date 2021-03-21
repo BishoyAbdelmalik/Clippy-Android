@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/ctrl_shift_esc"
+        android:title="ctrl+shift+esc" />
+    <item android:id="@+id/start_tab"
+        android:title="start+tab" />
+    <item android:id="@+id/alt_f4"
+        android:title="alt+F4" />
+    <item android:id="@+id/ctrl_shift_T"
+        android:title="ctrl+shift+T" />
+    <item android:id="@+id/ctrl_T"
+        android:title="ctrl+T" />
+    <item android:id="@+id/ctrl_W"
+        android:title="ctrl+W" />
+    <item android:id="@+id/cancel"
+        android:title="Cancel" />
+
+</menu>
