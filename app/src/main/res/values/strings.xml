@@ -20,6 +20,7 @@
     <string name="down"><![CDATA[▼]]></string>
     <string name="trackpad_mode">Trackpad Mode</string>
     <string name="arrows_mode">Arrows Mode</string>
+    <string name="preference_file_key">config</string>
     <string-array name="remote_control_dropdown">
         <item>Item 1</item>
         <item>Item 2</item>

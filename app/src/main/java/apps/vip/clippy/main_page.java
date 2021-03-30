@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -21,9 +22,16 @@ public class main_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+        Context context = this;
+        SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("ip",ForegroundService.url);
+        editor.putString("port",ForegroundService.port);
+        editor.putString("Flask Port",ForegroundService.flask_port);
+        editor.apply();
+
         TextView PCname = findViewById(R.id.PCname);
         //PCname.setTextSize((float) (PCname.getTextSize()*1.2));
-        Context context = this;
         findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
         findViewById(R.id.screenshot_page).setOnClickListener(v -> startActivity(new Intent(context, screenshot_page.class)));
         connectionStatus = findViewById(R.id.connectionStatus);

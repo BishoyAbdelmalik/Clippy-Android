@@ -13,8 +13,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -30,16 +33,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this;
+        verifyStoragePermissions(this);
+
+        //TODO if info exist attempt to connect first
+        LinearLayout choice=findViewById(R.id.choice);
+        choice.setVisibility(View.VISIBLE);
+        Button manual_input_choice=findViewById(R.id.manual_input_choice);
+        manual_input_choice.setOnClickListener(v-> {
+            findViewById(R.id.manual_input).setVisibility(View.VISIBLE);
+            Button save = findViewById(R.id.saveIP);
+            save.setOnClickListener(view -> openMainPage(context));
+            manual_input_choice.setVisibility(View.GONE);
+        });
         scan = false;
         EditText ip = findViewById(R.id.ip);
         EditText port = findViewById(R.id.port);
         ip.setText(this.ip);
         port.setText(this.port);
-        Button save = findViewById(R.id.saveIP);
-        Button stop = findViewById(R.id.stop);
-        context = this;
-        save.setOnClickListener(v -> openMainPage(context));
-        stop.setOnClickListener(v -> new serviceControl().killService(context));
         Button scan = findViewById(R.id.scan);
         scan.setOnClickListener(v -> openScanner());
         if (ForegroundService.started) {
@@ -51,8 +62,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(activity);
             }
         }
+        //TODO only hide it if ip and port not saved
+        ProgressBar bar=findViewById(R.id.progressBar2);
+        bar.setVisibility(View.GONE);
 
-        verifyStoragePermissions(this);
     }
     private void openMainPage(Context context) {
         EditText ip = findViewById(R.id.ip);
@@ -77,6 +90,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openScanner() {
+        if (ForegroundService.started) {
+            if (ForegroundService.main != null || ForegroundService.main.isConnected()) {
+                try{
+                    ForegroundService.main.close();
+                }catch (Exception e){
+                    System.out.println("Error in closing connection maybe");
+                }
+                ForegroundService.main=null;
+            }
+            new serviceControl().killService(context);
+
+
+        }
         try {
 
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
