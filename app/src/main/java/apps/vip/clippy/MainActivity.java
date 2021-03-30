@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,8 +26,6 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
-    String ip="192.168.0.40";
-    String port = "8765";
     boolean scan = false;
     static Context context = null;
     @Override
@@ -37,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         verifyStoragePermissions(this);
 
         //TODO if info exist attempt to connect first
+        SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String ipAdd=sharedPref.getString("ip","-1");
+        String portNumber=sharedPref.getString("port","-1");
+        String flaskPort=sharedPref.getString("flaskPort","-1");
+        boolean havesaved=!ipAdd.equals("-1") && !portNumber.equals("-1") && !flaskPort.equals("-1");
+
         LinearLayout choice=findViewById(R.id.choice);
         choice.setVisibility(View.VISIBLE);
         Button manual_input_choice=findViewById(R.id.manual_input_choice);
@@ -49,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         scan = false;
         EditText ip = findViewById(R.id.ip);
         EditText port = findViewById(R.id.port);
-        ip.setText(this.ip);
-        port.setText(this.port);
+        ip.setText(ForegroundService.url);
+        port.setText(ForegroundService.port);
         Button scan = findViewById(R.id.scan);
         scan.setOnClickListener(v -> openScanner());
         if (ForegroundService.started) {
@@ -65,6 +70,20 @@ public class MainActivity extends AppCompatActivity {
         //TODO only hide it if ip and port not saved
         ProgressBar bar=findViewById(R.id.progressBar2);
         bar.setVisibility(View.GONE);
+        if(havesaved){
+            System.out.println("ip "+ ipAdd+ " port "+portNumber+" flask "+flaskPort);
+            ForegroundService.main = null;
+            ForegroundService.connected = false;
+            ForegroundService.started = false;
+            ForegroundService.context=null;
+            ForegroundService.url=ipAdd;
+            ForegroundService.port=portNumber;
+            ForegroundService.flask_port=flaskPort;
+            bar.setVisibility(View.VISIBLE);
+            findViewById(R.id.choice).setVisibility(View.GONE);
+
+            openMainPage(this);
+        }
 
     }
     private void openMainPage(Context context) {
@@ -82,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         EditText ip = findViewById(R.id.ip);
         EditText port = findViewById(R.id.port);
-        ip.setText(this.ip);
-        port.setText(this.port);
+        ip.setText(ForegroundService.url);
+        port.setText(ForegroundService.port);
         if (scan) {
             openMainPage(this);
         }
@@ -132,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonData = new JSONObject(contents);
                     System.out.println("qr " + jsonData.get("ip"));
                     System.out.println("qr " + jsonData.get("port"));
-                    ip = String.valueOf(jsonData.get("ip"));
-                    port = String.valueOf(jsonData.get("port"));
+                    ForegroundService.url = String.valueOf(jsonData.get("ip"));
+                    ForegroundService.port = String.valueOf(jsonData.get("port"));
                     ForegroundService.flask_port=String.valueOf(jsonData.get("flask_port"));
                     scan = true;
                 } catch (JSONException e) {

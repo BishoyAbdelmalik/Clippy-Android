@@ -27,7 +27,7 @@ public class main_page extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("ip",ForegroundService.url);
         editor.putString("port",ForegroundService.port);
-        editor.putString("Flask Port",ForegroundService.flask_port);
+        editor.putString("flaskPort",ForegroundService.flask_port);
         editor.apply();
 
         TextView PCname = findViewById(R.id.PCname);
@@ -44,6 +44,10 @@ public class main_page extends AppCompatActivity {
         }
         PCname.setOnClickListener(v -> {
             ForegroundService.main.close();
+//            editor.putString("ip","-1");
+//            editor.putString("port","-1");
+//            editor.putString("flaskPort","-1");
+//            editor.apply();
             startActivity(new Intent(context, MainActivity.class));
         });
         Button shutdown=findViewById(R.id.shutdown);
