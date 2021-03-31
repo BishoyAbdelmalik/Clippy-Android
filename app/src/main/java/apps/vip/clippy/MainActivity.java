@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), "Service is running", Toast.LENGTH_SHORT).show();
                 Intent activity = new Intent(context, main_page.class);
+                activity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                 startActivity(activity);
             }
         }
@@ -91,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         ForegroundService.port = port.getText().toString();
         new serviceControl().startService(context);
         Intent activity = new Intent(context, main_page.class);
+        activity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         startActivity(activity);
     }
 
