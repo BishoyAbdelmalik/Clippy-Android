@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 public class serviceControl {
     public void startService(Context context) {
+        ForegroundService.context=context;
         Intent serviceIntent = new Intent(context, ForegroundService.class);
         serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
         ContextCompat.startForegroundService(context, serviceIntent);

@@ -247,7 +247,9 @@ public class Connection {
     }
 
     public void close() {
-        mWs.close();
+        if(mWs.getReadyState()!=ReadyState.CLOSED||mWs.getReadyState()!=ReadyState.CLOSING) {
+            mWs.close();
+        }
     }
 
     public void setAsMain() {

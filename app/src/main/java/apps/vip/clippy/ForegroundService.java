@@ -69,6 +69,9 @@ public class ForegroundService extends Service {
         super.onDestroy();
         main.close();
         started = false;
+        main = null;
+        connected = false;
+        context=null;
 
     }
     @Nullable

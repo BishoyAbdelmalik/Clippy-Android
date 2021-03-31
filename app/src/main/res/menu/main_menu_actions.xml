@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/connectORdisconnect"
+        android:title="Connect/Disconnect" />
+    <item
+        android:id="@+id/forget"
+        android:title="Forget PC" />
+
+</menu>

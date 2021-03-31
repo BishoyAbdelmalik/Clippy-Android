@@ -32,7 +32,8 @@
                 android:value=".main_page" />
         </activity>
         <activity android:name=".main_page" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.Clippy.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
