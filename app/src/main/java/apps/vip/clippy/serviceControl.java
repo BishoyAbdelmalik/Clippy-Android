@@ -9,7 +9,7 @@ public class serviceControl {
     public void startService(Context context) {
         ForegroundService.context=context;
         Intent serviceIntent = new Intent(context, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        serviceIntent.putExtra("inputExtra", "Running");
         ContextCompat.startForegroundService(context, serviceIntent);
     }
 
