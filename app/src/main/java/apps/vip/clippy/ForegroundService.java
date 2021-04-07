@@ -30,6 +30,8 @@ public class ForegroundService extends Service {
     public static boolean started = false;
     public static Context context=null;
 
+    public static String playingTXT = "Nothing Playing";
+    public static String thumbnailUrl = "https://memesr.com/meme-templates/doge-meme.png";
 
 
 

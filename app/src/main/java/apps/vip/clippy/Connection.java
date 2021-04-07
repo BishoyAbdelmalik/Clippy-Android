@@ -62,10 +62,10 @@ public class Connection {
                                 if (media_control.playingTxt != null) {
                                     media_control.playingTxt.setText(title);
                                 }
-                                media_control.playingTXT = title;
-                                media_control.thumbnailUrl = "http://" + ForegroundService.url + ":"+ForegroundService.flask_port + thumb;
+                                ForegroundService.playingTXT = title;
+                                ForegroundService.thumbnailUrl = "http://" + ForegroundService.url + ":"+ForegroundService.flask_port + thumb;
                                 if(media_control.playingThumb !=null) {
-                                    setMediaThumb(media_control.thumbnailUrl);
+                                    setMediaThumb(ForegroundService.thumbnailUrl);
                                 }
                                 System.out.println("playing title from connection " + title);
                             }

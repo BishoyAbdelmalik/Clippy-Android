@@ -12,9 +12,7 @@ import android.widget.TextView;
 
 public class media_control extends AppCompatActivity {
     public static ImageView playingThumb = null;
-    public static String thumbnailUrl = "https://memesr.com/meme-templates/doge-meme.png";
     public static TextView playingTxt = null;
-    public static String playingTXT = "Nothing Playing";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +23,12 @@ public class media_control extends AppCompatActivity {
             // Using an Async solution from SO
             // https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
             new Connection.DownloadImageTask((ImageView) playingThumb)
-                    .execute(thumbnailUrl);
+                    .execute(ForegroundService.thumbnailUrl);
         } catch (Exception e) {
             System.err.println("lmao get fukd user");
         }
         playingTxt = findViewById(R.id.playing);
-        playingTxt.setText(playingTXT);
+        playingTxt.setText(ForegroundService.playingTXT);
         findViewById(R.id.playPause).setOnClickListener(v -> {
             ForegroundService.sendCommand((ClipboardManager) getSystemService(CLIPBOARD_SERVICE), "playPause");
             vibe.vibrate(1);
