@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -35,7 +37,7 @@ public class main_page extends AppCompatActivity {
         editor.apply();
 
         PCname = findViewById(R.id.PCname);
-        connectionStatus = (TextView) findViewById(R.id.connectionStatus);
+        connectionStatus = findViewById(R.id.connectionStatus);
         //PCname.setTextSize((float) (PCname.getTextSize()*1.2));
         findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
         findViewById(R.id.screenshot_page).setOnClickListener(v -> startActivity(new Intent(context, screenshot_page.class)));
@@ -57,9 +59,30 @@ public class main_page extends AppCompatActivity {
             forgetPC(editor, String.valueOf(PCname.getText()));
             return true;
         });
-        Button shutdown=findViewById(R.id.shutdown);
-        Button reboot=findViewById(R.id.reboot);
-        shutdown.setOnClickListener(v->{
+        connectionStatus.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (connectionStatus.getText().toString().equals("Connected")) {
+                    connectionStatus.setTextColor(Color.GREEN);
+
+                } else {
+                    connectionStatus.setTextColor(Color.RED);
+
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+        Button shutdown = findViewById(R.id.shutdown);
+        Button reboot = findViewById(R.id.reboot);
+        shutdown.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle("Confirm")
                     .setMessage("Do you really want to shutdown the PC?")
