@@ -44,8 +44,9 @@
             android:layout_width="0dp"
             android:layout_weight="10"
             android:layout_height="300dp"
+            android:layout_marginLeft="10dp"
             android:id="@+id/touch"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/holo_blue_light"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -96,7 +97,6 @@
             android:layout_margin="10dp"
             android:text="@string/left_click"
             android:textAllCaps="false"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             />
         <Button
             android:layout_width="0dp"
@@ -106,7 +106,6 @@
             android:id="@+id/rightClick"
             android:layout_margin="10dp"
             android:text="@string/right_click"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             />
 
     </LinearLayout>
@@ -183,7 +182,6 @@
                 android:layout_margin="10dp"
                 android:text="Scroll Up"
                 android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
             <Button
                 android:layout_width="0dp"
@@ -193,7 +191,6 @@
                 android:id="@+id/scroll_down_full_button"
                 android:layout_margin="10dp"
                 android:text="Scroll Down"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
 
         </LinearLayout>
@@ -230,6 +227,7 @@
                 android:id="@+id/hotkeys"
                 android:layout_margin="10dp"
                 android:textColor="@android:color/holo_orange_dark"
+                android:textStyle="bold"
                 android:text="Send Shortcuts"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
@@ -240,6 +238,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/Browser_Controls"
                 android:textColor="@android:color/holo_orange_dark"
+                android:textStyle="bold"
                 android:text="Browser Controls"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
@@ -249,6 +248,7 @@
                 android:id="@+id/start"
                 android:layout_margin="10dp"
                 android:textColor="@android:color/holo_orange_dark"
+                android:textStyle="bold"
                 android:text="Start"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
@@ -258,6 +258,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/capslock"
                 android:textColor="@android:color/holo_orange_dark"
+                android:textStyle="bold"
                 android:text="Capslock"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
@@ -267,6 +268,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/media_controls"
                 android:textColor="@android:color/holo_orange_dark"
+                android:textStyle="bold"
                 android:text="Open Media Controls"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
