@@ -26,6 +26,7 @@ public class ForegroundService extends Service {
     public static String url = "192.168.0.40";
     public static String port = "8765";
     public static String flask_port = "5000";
+    public static String PCname = "PC name";
     public static boolean connected = false;
     public static boolean started = false;
     public static Context context=null;
@@ -109,6 +110,10 @@ public class ForegroundService extends Service {
     }
     public static void getScreenshot(ImageView img){
         new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
+    }
+
+    public static void getPCName() {
+        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "PC_name", "");
     }
 
     private static  Connection remoteControlConnection=null;

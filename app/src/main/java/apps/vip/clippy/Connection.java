@@ -80,6 +80,10 @@ public class Connection {
                             new DownloadImageTask((ImageView) o)
                                     .execute(screenshot_page.url);
                         }
+                    } else if(type.compareTo("PC_name") == 0) {
+                        ForegroundService.PCname = data;
+                        if (main_page.PCname != null)
+                            main_page.PCname.setText(ForegroundService.PCname);
                     }else {
 
                     }
@@ -158,6 +162,8 @@ public class Connection {
             sendRemoteControlCommand(type,data);
         }else if(type.compareTo("mouse_input")==0){
             sendRemoteControlCommand(type,data);
+        }else if(type.compareTo("PC_name")==0){
+            getPCName();
         }
 
     }
@@ -193,6 +199,19 @@ public class Connection {
             obj.put("type", "info");
             obj.put("data", command);
             Log.d("send", "sendCommand: " + obj.toString());
+            String msg = obj.toString();
+            mWs.send(msg);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getPCName() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("type", "PC_name");
+            obj.put("data", ForegroundService.PCname);
+            Log.d("send", "PC_name: " + obj.toString());
             String msg = obj.toString();
             mWs.send(msg);
         } catch (JSONException e) {
