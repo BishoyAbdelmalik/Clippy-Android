@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_light"
-                android:text="Playing:" />
+                android:text="Now Playing:" />
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -55,15 +55,16 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_marginVertical="100dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/playPause"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:background="@drawable/pause_play"
-            android:layout_margin="10dp" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/pause_play" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,9 +76,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/volumedown_btn" />
 
             <Button
@@ -85,19 +86,20 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/volumeup_btn" />
         </LinearLayout>
+
         <Button
             android:id="@+id/mute"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="0dp"
-            android:layout_marginTop="10dp"
             android:background="@drawable/mute_default" />
     </LinearLayout>
 
