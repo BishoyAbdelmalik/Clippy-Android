@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 public class main_page extends AppCompatActivity {
     public static TextView connectionStatus = null;
+    public static TextView PCname = null;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class main_page extends AppCompatActivity {
         editor.putString("flaskPort",ForegroundService.flask_port);
         editor.apply();
 
-        TextView PCname = findViewById(R.id.PCname);
+        PCname = findViewById(R.id.PCname);
         //PCname.setTextSize((float) (PCname.getTextSize()*1.2));
         findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
         findViewById(R.id.screenshot_page).setOnClickListener(v -> startActivity(new Intent(context, screenshot_page.class)));
@@ -45,6 +46,7 @@ public class main_page extends AppCompatActivity {
                 new serviceControl().killService(this);
             }
         }
+        ForegroundService.getPCName();
         PCname.setOnClickListener(v -> connectORdisconnect());
         PCname.setOnLongClickListener(v -> {
             forgetPC(editor, String.valueOf(PCname.getText()));
