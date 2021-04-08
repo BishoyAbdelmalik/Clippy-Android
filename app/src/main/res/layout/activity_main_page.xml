@@ -96,7 +96,7 @@
                         android:id="@+id/remote_control_page"
                         android:layout_width="177dp"
                         android:layout_height="40dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/remote_control" />
@@ -106,7 +106,7 @@
                         android:layout_width="177dp"
                         android:layout_height="40dp"
                         android:text="@string/view_screenshot"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -117,7 +117,7 @@
                         android:id="@+id/media"
                         android:layout_width="177dp"
                         android:layout_height="40dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/media_controls" />
@@ -126,7 +126,7 @@
                         android:id="@+id/send_file"
                         android:layout_width="177dp"
                         android:layout_height="40dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:text="@string/send_a_file" />
                 </LinearLayout>
 
@@ -152,7 +152,7 @@
                         android:id="@+id/shutdown"
                         android:layout_width="177dp"
                         android:layout_height="40dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/shutdown" />
@@ -161,7 +161,7 @@
                         android:id="@+id/reboot"
                         android:layout_width="177dp"
                         android:layout_height="40dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:text="@string/reboot" />
                 </LinearLayout>
 
@@ -172,7 +172,7 @@
                         android:id="@+id/sleep"
                         android:layout_width="177dp"
                         android:layout_height="40dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/sleep" />
@@ -181,7 +181,7 @@
                         android:id="@+id/hibernate"
                         android:layout_width="177dp"
                         android:layout_height="40dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:text="@string/hibernate" />
                 </LinearLayout>
         </LinearLayout>
