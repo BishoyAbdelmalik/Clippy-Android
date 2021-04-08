@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
 
 public class main_page extends AppCompatActivity {
     public static TextView connectionStatus = null;
@@ -32,6 +34,7 @@ public class main_page extends AppCompatActivity {
         editor.putString("flaskPort",ForegroundService.flask_port);
         editor.apply();
 
+        connectionStatus = (TextView) findViewById(R.id.connectionStatus);
         TextView PCname = findViewById(R.id.PCname);
         //PCname.setTextSize((float) (PCname.getTextSize()*1.2));
         findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
@@ -40,8 +43,10 @@ public class main_page extends AppCompatActivity {
         if (ForegroundService.main != null) {
             if (ForegroundService.main.isConnected()) {
                 connectionStatus.setText("Connected");
+                connectionStatus.setTextColor(Color.GREEN);
             } else {
                 connectionStatus.setText("Not Connected");
+                connectionStatus.setTextColor(Color.RED);
                 new serviceControl().killService(this);
             }
         }

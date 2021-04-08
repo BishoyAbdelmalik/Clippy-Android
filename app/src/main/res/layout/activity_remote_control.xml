@@ -229,14 +229,17 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/hotkeys"
                 android:layout_margin="10dp"
+                android:textColor="@android:color/holo_orange_dark"
                 android:text="Send Shortcuts"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:id="@+id/Browser_Controls"
+                android:textColor="@android:color/holo_orange_dark"
                 android:text="Browser Controls"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
@@ -245,6 +248,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/start"
                 android:layout_margin="10dp"
+                android:textColor="@android:color/holo_orange_dark"
                 android:text="Start"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
@@ -253,6 +257,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:id="@+id/capslock"
+                android:textColor="@android:color/holo_orange_dark"
                 android:text="Capslock"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
@@ -261,6 +266,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:id="@+id/media_controls"
+                android:textColor="@android:color/holo_orange_dark"
                 android:text="Open Media Controls"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 />
