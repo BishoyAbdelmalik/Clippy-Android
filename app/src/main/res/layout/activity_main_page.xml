@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".main_page">
 
-
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -24,32 +23,34 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/sym_def_app_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:srcCompat="@drawable/pc_default"
             tools:ignore="MissingConstraints" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/PCname"
-                android:layout_width="match_parent"
+                style="@style/colorblackText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
+                android:fontFamily="@font/roboto_light"
+                android:text="PC name"
                 android:textSize="30sp"
-                style="@style/colorblackText"
-                android:text="PC name" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/connectionStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="" />
+                android:text=""
+                android:textSize="20dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -70,25 +71,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/darker_gray" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20dp"
+                android:text="Main Controls" />
+
             <Button
                 android:id="@+id/remote_control_page"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/remote_control" />
+
             <Button
                 android:id="@+id/screenshot_page"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/view_screenshot" />
+
             <Button
                 android:id="@+id/media"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/media_controls" />
+
             <Button
                 android:id="@+id/send_file"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/send_a_file" />
             <View
                 android:layout_width="match_parent"
@@ -98,36 +117,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                android:textSize="20dp"
                 android:text="@string/system_control" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
-                android:background="@android:color/darker_gray" />
 
             <Button
                 android:id="@+id/shutdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/shutdown" />
 
             <Button
                 android:id="@+id/reboot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/reboot" />
 
             <Button
                 android:id="@+id/sleep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/sleep" />
 
             <Button
                 android:id="@+id/hibernate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="177dp"
+                android:layout_height="40dp"
                 android:text="@string/hibernate" />
 
         </LinearLayout>
