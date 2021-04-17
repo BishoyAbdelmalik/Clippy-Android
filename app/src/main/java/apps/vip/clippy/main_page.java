@@ -31,10 +31,10 @@ public class main_page extends AppCompatActivity {
         Context context = this;
         SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("ip",ForegroundService.url);
-        editor.putString("port",ForegroundService.port);
-        editor.putString("flaskPort",ForegroundService.flask_port);
-        editor.apply();
+//        editor.putString("ip",ForegroundService.url);
+//        editor.putString("port",ForegroundService.port);
+//        editor.putString("flaskPort",ForegroundService.flask_port);
+//        editor.apply();
 
         PCname = findViewById(R.id.PCname);
         connectionStatus = findViewById(R.id.connectionStatus);

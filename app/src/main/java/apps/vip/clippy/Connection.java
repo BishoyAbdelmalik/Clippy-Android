@@ -3,6 +3,8 @@ package apps.vip.clippy;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -280,6 +282,12 @@ public class Connection {
 
     public void setAsMain() {
         this.mainConnection = true;
+        SharedPreferences sharedPref = ForegroundService.context.getSharedPreferences(ForegroundService.context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("ip",ForegroundService.url);
+        editor.putString("port",ForegroundService.port);
+        editor.putString("flaskPort",ForegroundService.flask_port);
+        editor.apply();
         //disconnect if didnt connect in 5 seconds
         new CountDownTimer(5000, 1000) {
                 public void onTick(long millisUntilFinished) {
