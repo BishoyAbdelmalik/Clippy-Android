@@ -46,18 +46,18 @@ public class main_page extends AppCompatActivity {
             if (ForegroundService.main.isConnected()) {
                 connectionStatus.setText("Connected");
                 connectionStatus.setTextColor(Color.GREEN);
-
+                try {
+                    ForegroundService.getPCName();
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
             } else {
                 connectionStatus.setText("Not Connected");
                 connectionStatus.setTextColor(Color.RED);
                 new serviceControl().killService(this);
             }
         }
-        try {
-            ForegroundService.getPCName();
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+
         PCname.setOnClickListener(v -> connectORdisconnect());
         PCname.setOnLongClickListener(v -> {
             forgetPC(editor, String.valueOf(PCname.getText()));
@@ -188,7 +188,14 @@ public class main_page extends AppCompatActivity {
         new AlertDialog.Builder(context)
                 .setTitle("Do you want to connect?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> new serviceControl().startService(context))
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                    new serviceControl().startService(context);
+                    try {
+                        ForegroundService.getPCName();
+                    } catch (Exception e) {
+                        System.err.println(e);
+                    }
+                })
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
