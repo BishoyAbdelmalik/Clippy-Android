@@ -116,7 +116,7 @@ public class Connection {
                 if (main_page.connectionStatus != null && mainConnection) {
                     main_page.connectionStatus.setText("Not Connected");
                 }
-                if (mainConnection) {
+                if (mainConnection && ForegroundService.started) {
                     new serviceControl().killService(ForegroundService.context);
                 }
             }
@@ -125,7 +125,7 @@ public class Connection {
             public void onError(Exception ex) {
                 ForegroundService.connected = false;
                 ex.printStackTrace();
-                if (mainConnection) {
+                if (mainConnection && ForegroundService.started) {
                     new serviceControl().killService(ForegroundService.context);
                 }
             }
@@ -287,7 +287,7 @@ public class Connection {
                 }
 
                 public void onFinish() {
-                    if(!isConnected()) {
+                    if(!isConnected() &&  ForegroundService.started) {
                         new serviceControl().killService(ForegroundService.context);
                         Toast.makeText(ForegroundService.context,"Failed to connect",Toast.LENGTH_SHORT).show();
                     }
