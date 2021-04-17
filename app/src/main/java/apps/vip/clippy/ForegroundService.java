@@ -58,7 +58,8 @@ public class ForegroundService extends Service {
                 .build();
         startForeground(1, notification);
         ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        context=this;
+//        context=this;
+        context=getBaseContext();
         String path = "get";
         main = new Connection(clipboardManager, getURI(url, port, path));
         main.setAsMain();
@@ -109,17 +110,17 @@ public class ForegroundService extends Service {
         new Connection(clipBoard, getURI(url, port, "send"), "command", command);
     }
     public static void getScreenshot(ImageView img){
-        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
+        new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
     }
 
     public static void getPCName() {
-        new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "PC_name", "");
+        new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "PC_name", "");
     }
 
     private static  Connection remoteControlConnection=null;
     public static void sendMouseCommand(String command) {
         if (remoteControlConnection==null || !remoteControlConnection.isConnected()) {
-            remoteControlConnection=new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "mouse_input", command);
+            remoteControlConnection=new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "mouse_input", command);
         }else {
             remoteControlConnection.sendRemoteControlCommand("mouse_input", command);
 
@@ -128,7 +129,7 @@ public class ForegroundService extends Service {
     }
     public static void sendKeyboardKey(String key) {
         if (remoteControlConnection==null || !remoteControlConnection.isConnected()){
-            remoteControlConnection=new Connection((ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"),"keyboard_input",key);
+            remoteControlConnection=new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"),"keyboard_input",key);
         }else {
             remoteControlConnection.sendRemoteControlCommand("keyboard_input", key);
         }

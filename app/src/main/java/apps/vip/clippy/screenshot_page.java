@@ -45,7 +45,7 @@ public class screenshot_page extends AppCompatActivity {
                 break;
             case R.id.save:
                 if (url !=null)
-                    new downloadFile(url, MainActivity.context);
+                    new downloadFile(url, ForegroundService.context);
                 break;
         }
         return super.onOptionsItemSelected(item);

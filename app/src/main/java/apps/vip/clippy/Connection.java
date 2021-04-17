@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.ImageView;
@@ -72,7 +73,7 @@ public class Connection {
                         }
 
                     } else if (type.compareTo("file_path") == 0) {
-                        new downloadFile(createFileURL(data), MainActivity.context);
+                        new downloadFile(createFileURL(data), ForegroundService.context);
                     } else if(type.compareTo("file_screenshot") == 0) {
                         System.out.println("screenshot: "+data);
                         screenshot_page.url=createFileURL(data);
@@ -115,12 +116,18 @@ public class Connection {
                 if (main_page.connectionStatus != null && mainConnection) {
                     main_page.connectionStatus.setText("Not Connected");
                 }
+                if (mainConnection) {
+                    new serviceControl().killService(ForegroundService.context);
+                }
             }
 
             @Override
             public void onError(Exception ex) {
                 ForegroundService.connected = false;
                 ex.printStackTrace();
+                if (mainConnection) {
+                    new serviceControl().killService(ForegroundService.context);
+                }
             }
 
         };
@@ -235,7 +242,7 @@ public class Connection {
 
     public void sendRemoteControlCommand(String type,String data) {
         if (!isConnected()){
-            Toast.makeText(MainActivity.context, "Connection Failed or still connecting", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ForegroundService.context, "Connection Failed or still connecting", Toast.LENGTH_SHORT).show();
             return;
         }
         JSONObject obj = new JSONObject();
@@ -273,6 +280,19 @@ public class Connection {
 
     public void setAsMain() {
         this.mainConnection = true;
+        //disconnect if didnt connect in 5 seconds
+        new CountDownTimer(5000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    System.out.println("seconds remaining: " + millisUntilFinished / 1000);
+                }
+
+                public void onFinish() {
+                    if(!isConnected()) {
+                        new serviceControl().killService(ForegroundService.context);
+                        Toast.makeText(ForegroundService.context,"Failed to connect",Toast.LENGTH_SHORT).show();
+                    }
+                }
+        }.start();
     }
     static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
