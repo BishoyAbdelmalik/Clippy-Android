@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
         verifyStoragePermissions(this);
+        EditText ip = findViewById(R.id.ip);
+        EditText port = findViewById(R.id.port);
+        //TODO only hide it if ip and port not saved
+        ProgressBar bar=findViewById(R.id.progressBar2);
+        bar.setVisibility(View.GONE);
+        LinearLayout choice=findViewById(R.id.choice);
 
         //TODO if info exist attempt to connect first
         SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -42,51 +48,48 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(portNumber);
         System.out.println(flaskPort);
         boolean havesaved=!ipAdd.equals("-1") && !portNumber.equals("-1") && !flaskPort.equals("-1");
-
-        LinearLayout choice=findViewById(R.id.choice);
-        choice.setVisibility(View.VISIBLE);
-        Button manual_input_choice=findViewById(R.id.manual_input_choice);
-        manual_input_choice.setOnClickListener(v-> {
-            findViewById(R.id.manual_input).setVisibility(View.VISIBLE);
-            Button save = findViewById(R.id.saveIP);
-            save.setOnClickListener(view -> openMainPage(context));
-            manual_input_choice.setVisibility(View.GONE);
-        });
-        scan = false;
-        EditText ip = findViewById(R.id.ip);
-        EditText port = findViewById(R.id.port);
-        ip.setText(ForegroundService.url);
-        port.setText(ForegroundService.port);
-        Button scan = findViewById(R.id.scan);
-        scan.setOnClickListener(v -> openScanner());
-        if (ForegroundService.started) {
-            if (ForegroundService.main == null || !ForegroundService.main.isConnected()) {
-                new serviceControl().killService(context);
-            } else {
-                Toast.makeText(getApplicationContext(), "Service is running", Toast.LENGTH_SHORT).show();
-                Intent activity = new Intent(context, main_page.class);
-                activity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                startActivity(activity);
-            }
-        }
-        //TODO only hide it if ip and port not saved
-        ProgressBar bar=findViewById(R.id.progressBar2);
-        bar.setVisibility(View.GONE);
         if(havesaved){
             System.out.println("ip "+ ipAdd+ " port "+portNumber+" flask "+flaskPort);
             ForegroundService.main = null;
             ForegroundService.connected = false;
             ForegroundService.started = false;
             ForegroundService.context=null;
-            ForegroundService.url=ipAdd;
-            ForegroundService.port=portNumber;
+            ip.setText(ipAdd);
+            port.setText(portNumber);
             ForegroundService.flask_port=flaskPort;
             bar.setVisibility(View.VISIBLE);
             findViewById(R.id.choice).setVisibility(View.GONE);
 
             openMainPage(this);
+        }else {
+            choice.setVisibility(View.VISIBLE);
+            Button manual_input_choice = findViewById(R.id.manual_input_choice);
+            manual_input_choice.setOnClickListener(v -> {
+                findViewById(R.id.manual_input).setVisibility(View.VISIBLE);
+                Button save = findViewById(R.id.saveIP);
+                save.setOnClickListener(view -> openMainPage(context));
+                manual_input_choice.setVisibility(View.GONE);
+            });
+            scan = false;
+
+            ip.setText(ForegroundService.url);
+            port.setText(ForegroundService.port);
+            Button scan = findViewById(R.id.scan);
+            scan.setOnClickListener(v -> openScanner());
+            if (ForegroundService.started) {
+                if (ForegroundService.main == null || !ForegroundService.main.isConnected()) {
+                    new serviceControl().killService(context);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Service is running", Toast.LENGTH_SHORT).show();
+                    Intent activity = new Intent(context, main_page.class);
+                    activity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(activity);
+                }
+            }
         }
+
+
 
     }
     private void openMainPage(Context context) {

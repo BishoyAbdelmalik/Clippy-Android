@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
     public static Connection main = null;
-    public static String url = "192.168.0.40";
+    public static String url = "192.168.0.60";
     public static String port = "8765";
     public static String flask_port = "5000";
     public static String PCname = "PC name";
