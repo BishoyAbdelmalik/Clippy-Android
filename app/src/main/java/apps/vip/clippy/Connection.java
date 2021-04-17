@@ -27,7 +27,7 @@ public class Connection {
     public static String lastRecieved = "";
     boolean mainConnection = false;
     Object o;
-    Connection(ClipboardManager clipboardManager, URI uri) {
+    Connection(ClipboardManager clipboardManager, URI uri) throws Exception {
 
 
         mWs = new WebSocketClient(uri) {
@@ -156,7 +156,7 @@ public class Connection {
         return mWs.getReadyState() == ReadyState.OPEN;
     }
 
-    public Connection(ClipboardManager clipBoard, URI uri, String type, String data) {
+    public Connection(ClipboardManager clipBoard, URI uri, String type, String data) throws Exception {
         this(clipBoard, uri);
         while (!isConnected()) ;
         if (type.compareTo("clipboard") == 0) {
@@ -177,7 +177,7 @@ public class Connection {
 
 
 
-    public Connection(ClipboardManager clipBoard, URI uri, String type, Object o) {
+    public Connection(ClipboardManager clipBoard, URI uri, String type, Object o) throws Exception {
         this(clipBoard, uri);
         while (!isConnected()) ;
         if (type.compareTo("get_screenshot") == 0){

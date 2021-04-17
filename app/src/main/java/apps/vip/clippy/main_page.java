@@ -53,7 +53,11 @@ public class main_page extends AppCompatActivity {
                 new serviceControl().killService(this);
             }
         }
-        ForegroundService.getPCName();
+        try {
+            ForegroundService.getPCName();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
         PCname.setOnClickListener(v -> connectORdisconnect());
         PCname.setOnLongClickListener(v -> {
             forgetPC(editor, String.valueOf(PCname.getText()));

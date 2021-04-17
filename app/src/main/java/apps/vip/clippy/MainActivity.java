@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         String ipAdd=sharedPref.getString("ip","-1");
         String portNumber=sharedPref.getString("port","-1");
         String flaskPort=sharedPref.getString("flaskPort","-1");
+        System.out.println(ipAdd);
+        System.out.println(portNumber);
+        System.out.println(flaskPort);
         boolean havesaved=!ipAdd.equals("-1") && !portNumber.equals("-1") && !flaskPort.equals("-1");
 
         LinearLayout choice=findViewById(R.id.choice);

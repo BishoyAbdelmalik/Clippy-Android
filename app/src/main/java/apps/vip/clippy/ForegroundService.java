@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -61,7 +62,13 @@ public class ForegroundService extends Service {
 //        context=this;
         context=getBaseContext();
         String path = "get";
-        main = new Connection(clipboardManager, getURI(url, port, path));
+        try {
+            main = new Connection(clipboardManager, getURI(url, port, path));
+        } catch (Exception e) {
+            new AlertDialog.Builder(ForegroundService.context)
+                    .setTitle(e.toString())
+                    .setIcon(android.R.drawable.ic_dialog_alert);
+        }
         main.setAsMain();
         clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
         //do heavy work on a background thread
@@ -107,20 +114,40 @@ public class ForegroundService extends Service {
     }
 
     public static void sendCommand(ClipboardManager clipBoard, String command) {
-        new Connection(clipBoard, getURI(url, port, "send"), "command", command);
+        try {
+            new Connection(clipBoard, getURI(url, port, "send"), "command", command);
+        } catch (Exception e) {
+            System.err.println(e);
+            System.exit(1);
+        }
     }
-    public static void getScreenshot(ImageView img){
-        new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
+    public static void getScreenshot(ImageView img) {
+        try {
+            new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "get_screenshot", img);
+        } catch (Exception e) {
+            System.err.println(e);
+            System.exit(1);
+        }
     }
 
-    public static void getPCName() {
-        new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "PC_name", "");
+    public static void getPCName() throws Exception {
+        try {
+            new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "PC_name", "");
+        } catch (Exception e) {
+            System.err.println(e);
+            System.exit(1);
+        }
     }
 
     private static  Connection remoteControlConnection=null;
     public static void sendMouseCommand(String command) {
         if (remoteControlConnection==null || !remoteControlConnection.isConnected()) {
-            remoteControlConnection=new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "mouse_input", command);
+            try {
+                remoteControlConnection=new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"), "mouse_input", command);
+            } catch (Exception e) {
+                System.err.println(e);
+                System.exit(1);
+            }
         }else {
             remoteControlConnection.sendRemoteControlCommand("mouse_input", command);
 
@@ -129,7 +156,12 @@ public class ForegroundService extends Service {
     }
     public static void sendKeyboardKey(String key) {
         if (remoteControlConnection==null || !remoteControlConnection.isConnected()){
-            remoteControlConnection=new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"),"keyboard_input",key);
+            try {
+                remoteControlConnection=new Connection((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE), getURI(url, port, "send"),"keyboard_input",key);
+            } catch (Exception e) {
+                System.err.println(e);
+                System.exit(1);
+            }
         }else {
             remoteControlConnection.sendRemoteControlCommand("keyboard_input", key);
         }
@@ -142,7 +174,7 @@ public class ForegroundService extends Service {
         }
 
         }
-    public static void getInfo(ClipboardManager clipBoard, String command) {
+    public static void getInfo(ClipboardManager clipBoard, String command) throws Exception {
         new Connection(clipBoard, getURI(url, port, "send"), "info", command);
     }
     public static void createLinksNotification(ArrayList<String> links) {
@@ -202,7 +234,13 @@ public class ForegroundService extends Service {
                 ClipData.Item item = clipBoard.getPrimaryClip().getItemAt(0);
                 pasteData = item.getText();
                 if (Connection.lastRecieved.compareTo(String.valueOf(pasteData)) != 0) {
-                    new Connection(clipBoard, getURI(url, port, "send"), "clipboard", String.valueOf(pasteData));
+                    try {
+                        new Connection(clipBoard, getURI(url, port, "send"), "clipboard", String.valueOf(pasteData));
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(ForegroundService.context)
+                                .setTitle(e.toString())
+                                .setIcon(android.R.drawable.ic_dialog_alert);
+                    }
                 }
             }
         }
