@@ -63,14 +63,18 @@ public class ForegroundService extends Service {
         context=getBaseContext();
         String path = "get";
         try {
-            main = new Connection(clipboardManager, getURI(url, port, path));
+            main = new Connection(clipboardManager, getURI(url, port, path),true);
+        }catch (java.net.ConnectException e){
+            System.err.println(e);
+            stopSelf();
         } catch (Exception e) {
+            System.err.println(e);
             new AlertDialog.Builder(ForegroundService.context)
                     .setTitle(e.toString())
                     .setIcon(android.R.drawable.ic_dialog_alert);
         }
-        main.setAsMain();
         clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
+
         //do heavy work on a background thread
         //stopSelf();
         return START_NOT_STICKY;

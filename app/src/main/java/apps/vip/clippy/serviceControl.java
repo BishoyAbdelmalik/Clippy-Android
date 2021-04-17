@@ -7,14 +7,19 @@ import androidx.core.content.ContextCompat;
 
 public class serviceControl {
     public void startService(Context context) {
-        ForegroundService.context=context;
-        Intent serviceIntent = new Intent(context, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Running");
-        ContextCompat.startForegroundService(context, serviceIntent);
+        if(!ForegroundService.started) {
+            ForegroundService.context=context;
+            Intent serviceIntent = new Intent(context, ForegroundService.class);
+            serviceIntent.putExtra("inputExtra", "Running");
+            ContextCompat.startForegroundService(context, serviceIntent);
+        }
     }
 
     public void killService(Context context) {
-        Intent serviceIntent = new Intent(context, ForegroundService.class);
-        context.stopService(serviceIntent);
+        if(ForegroundService.started) {
+            Intent serviceIntent = new Intent(context, ForegroundService.class);
+            context.stopService(serviceIntent);
+        }
+
     }
 }

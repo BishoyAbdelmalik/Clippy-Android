@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.ImageView;
@@ -23,13 +24,14 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class Connection {
-    private final WebSocketClient mWs;
+    private WebSocketClient mWs;
     public static String lastRecieved = "";
     boolean mainConnection = false;
     Object o;
-    Connection(ClipboardManager clipboardManager, URI uri) throws Exception {
+    public Connection(ClipboardManager clipboardManager, URI uri, boolean main) throws Exception {
 
 
         mWs = new WebSocketClient(uri) {
@@ -105,7 +107,13 @@ public class Connection {
                 ForegroundService.connected = true;
                 if (main_page.connectionStatus != null && mainConnection) {
                     main_page.connectionStatus.setText("Connected");
+                    try {
+                        ForegroundService.getPCName();
+                    } catch (Exception e) {
+                        System.err.println(e);
+                    }
                 }
+
                 //this.send("test");
 
             }
@@ -133,8 +141,41 @@ public class Connection {
             }
 
         };
+        this.mainConnection = main;
+
         //open websocket
-        mWs.connect();
+        if(mainConnection) {
+            if(main) {
+                SharedPreferences sharedPref = ForegroundService.context.getSharedPreferences(ForegroundService.context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("ip",ForegroundService.url);
+                editor.putString("port",ForegroundService.port);
+                editor.putString("flaskPort",ForegroundService.flask_port);
+                editor.apply();
+            }
+            final Runnable r = () -> {
+                try {
+                    boolean result=mWs.connectBlocking(10000, TimeUnit.MILLISECONDS);
+                    if(!result){
+                        Handler h = new Handler(ForegroundService.context.getMainLooper());
+                        // Although you need to pass an appropriate context
+                        h.post(() -> {
+                            if (main_page.connectionStatus != null) {
+                                main_page.connectionStatus.setText("Failed to connect");
+                            }
+                            Toast.makeText(ForegroundService.context,"Failed to connect",Toast.LENGTH_LONG).show();
+                        });
+                        new serviceControl().killService(ForegroundService.context);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            };
+            new Thread(r).start();
+        }else{
+            mWs.connect();
+        }
+
     }
 
     public void setMediaThumb(String thumbnailUrl) {
@@ -159,7 +200,7 @@ public class Connection {
     }
 
     public Connection(ClipboardManager clipBoard, URI uri, String type, String data) throws Exception {
-        this(clipBoard, uri);
+        this(clipBoard, uri,false);
         while (!isConnected()) ;
         if (type.compareTo("clipboard") == 0) {
             sendClipboard(data);
@@ -180,7 +221,7 @@ public class Connection {
 
 
     public Connection(ClipboardManager clipBoard, URI uri, String type, Object o) throws Exception {
-        this(clipBoard, uri);
+        this(clipBoard, uri,false);
         while (!isConnected()) ;
         if (type.compareTo("get_screenshot") == 0){
             this.o=o;
@@ -280,28 +321,6 @@ public class Connection {
         }
     }
 
-    public void setAsMain() {
-        this.mainConnection = true;
-        SharedPreferences sharedPref = ForegroundService.context.getSharedPreferences(ForegroundService.context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("ip",ForegroundService.url);
-        editor.putString("port",ForegroundService.port);
-        editor.putString("flaskPort",ForegroundService.flask_port);
-        editor.apply();
-        //disconnect if didnt connect in 5 seconds
-        new CountDownTimer(5000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    System.out.println("seconds remaining: " + millisUntilFinished / 1000);
-                }
-
-                public void onFinish() {
-                    if(!isConnected() &&  ForegroundService.started) {
-                        new serviceControl().killService(ForegroundService.context);
-                        Toast.makeText(ForegroundService.context,"Failed to connect",Toast.LENGTH_SHORT).show();
-                    }
-                }
-        }.start();
-    }
     static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 

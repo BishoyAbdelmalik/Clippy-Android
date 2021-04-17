@@ -42,27 +42,6 @@ public class main_page extends AppCompatActivity {
         findViewById(R.id.media).setOnClickListener(v -> startActivity(new Intent(context, media_control.class)));
         findViewById(R.id.screenshot_page).setOnClickListener(v -> startActivity(new Intent(context, screenshot_page.class)));
         connectionStatus = findViewById(R.id.connectionStatus);
-        if (ForegroundService.main != null) {
-            if (ForegroundService.main.isConnected()) {
-                connectionStatus.setText("Connected");
-                connectionStatus.setTextColor(Color.GREEN);
-                try {
-                    ForegroundService.getPCName();
-                } catch (Exception e) {
-                    System.err.println(e);
-                }
-            } else {
-                connectionStatus.setText("Not Connected");
-                connectionStatus.setTextColor(Color.RED);
-                new serviceControl().killService(this);
-            }
-        }
-
-        PCname.setOnClickListener(v -> connectORdisconnect());
-        PCname.setOnLongClickListener(v -> {
-            forgetPC(editor, String.valueOf(PCname.getText()));
-            return true;
-        });
         connectionStatus.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -70,7 +49,9 @@ public class main_page extends AppCompatActivity {
                 if (connectionStatus.getText().toString().equals("Connected")) {
                     connectionStatus.setTextColor(Color.GREEN);
 
-                } else {
+                } else if(connectionStatus.getText().toString().equals("Connecting")){
+                    connectionStatus.setTextColor(Color.parseColor("#FF4500"));
+                } else{
                     connectionStatus.setTextColor(Color.RED);
 
                 }
@@ -84,6 +65,29 @@ public class main_page extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+        if (ForegroundService.main != null && ForegroundService.started) {
+            if (ForegroundService.main.isConnected()) {
+                connectionStatus.setText("Connected");
+                //TODO maybe remove this part
+                try {
+                    ForegroundService.getPCName();
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+                /////
+            } else {
+                connectionStatus.setText("Connecting");
+            }
+        }else {
+            connectionStatus.setText("Not Connected");
+        }
+
+        PCname.setOnClickListener(v -> connectORdisconnect());
+        PCname.setOnLongClickListener(v -> {
+            forgetPC(editor, String.valueOf(PCname.getText()));
+            return true;
+        });
+
         Button shutdown = findViewById(R.id.shutdown);
         Button reboot = findViewById(R.id.reboot);
         shutdown.setOnClickListener(v -> {
@@ -190,11 +194,6 @@ public class main_page extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     new serviceControl().startService(context);
-                    try {
-                        ForegroundService.getPCName();
-                    } catch (Exception e) {
-                        System.err.println(e);
-                    }
                 })
                 .setNegativeButton(android.R.string.no, null).show();
     }
@@ -213,9 +212,7 @@ public class main_page extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     new serviceControl().killService(this);
-                    editor.putString("ip","-1");
-                    editor.putString("port","-1");
-                    editor.putString("flaskPort","-1");
+                    editor.clear();
                     editor.apply();
                     startActivity(new Intent(this,MainActivity.class));
                 })
