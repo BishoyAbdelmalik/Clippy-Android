@@ -87,8 +87,13 @@ public class Connection {
                         }
                     } else if(type.compareTo("PC_name") == 0) {
                         ForegroundService.PCname = data;
-                        if (main_page.PCname != null)
+                        Handler h = new Handler(ForegroundService.context.getMainLooper());
+                        // Although you need to pass an appropriate context
+                        h.post(() -> {
                             main_page.PCname.setText(ForegroundService.PCname);
+                        });
+
+
                     }else {
 
                     }
@@ -103,7 +108,11 @@ public class Connection {
             @SuppressLint("SetTextI18n")
             @Override
             public void onOpen( ServerHandshake handshake ) {
-                System.out.println("opened connection");
+                if(mainConnection){
+                    System.out.println("opened main connection");
+                }else {
+                    System.out.println("opened connection");
+                }
                 ForegroundService.connected = true;
                 if (main_page.connectionStatus != null && mainConnection) {
                     main_page.connectionStatus.setText("Connected");
@@ -142,7 +151,11 @@ public class Connection {
 
         };
         this.mainConnection = main;
-
+        new Handler(ForegroundService.context.getMainLooper()).post(() -> {
+            if (main_page.connectionStatus != null && mainConnection) {
+                main_page.connectionStatus.setText("Connecting");
+            }
+        });
         //open websocket
         if(mainConnection) {
             if(main) {
@@ -155,11 +168,11 @@ public class Connection {
             }
             final Runnable r = () -> {
                 try {
-                    boolean result=mWs.connectBlocking(10000, TimeUnit.MILLISECONDS);
+                    boolean result=mWs.connectBlocking(1, TimeUnit.MINUTES);
                     if(!result){
-                        Handler h = new Handler(ForegroundService.context.getMainLooper());
+
                         // Although you need to pass an appropriate context
-                        h.post(() -> {
+                        new Handler(ForegroundService.context.getMainLooper()).post(() -> {
                             if (main_page.connectionStatus != null) {
                                 main_page.connectionStatus.setText("Failed to connect");
                             }

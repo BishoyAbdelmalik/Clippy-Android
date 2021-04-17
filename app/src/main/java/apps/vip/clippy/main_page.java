@@ -65,6 +65,7 @@ public class main_page extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+        PCname.setText(ForegroundService.PCname);
         if (ForegroundService.main != null && ForegroundService.started) {
             if (ForegroundService.main.isConnected()) {
                 connectionStatus.setText("Connected");
@@ -147,6 +148,27 @@ public class main_page extends AppCompatActivity {
         remoteControlPage.setOnClickListener(v -> startActivity(new Intent(context,RemoteControl.class)));
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ForegroundService.main != null && ForegroundService.started) {
+            if (ForegroundService.main.isConnected()) {
+                connectionStatus.setText("Connected");
+                //TODO maybe remove this part
+                try {
+                    ForegroundService.getPCName();
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+                /////
+            } else {
+                connectionStatus.setText("Connecting");
+            }
+        }else {
+            connectionStatus.setText("Not Connected");
+        }
     }
 
     private void connectORdisconnect() {
