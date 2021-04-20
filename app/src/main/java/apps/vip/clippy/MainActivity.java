@@ -39,6 +39,19 @@ public class MainActivity extends AppCompatActivity {
         ProgressBar bar=findViewById(R.id.progressBar2);
         bar.setVisibility(View.GONE);
         LinearLayout choice=findViewById(R.id.choice);
+//        String s="";
+//        s="8183509566";
+//        System.out.println(s+" "+Patterns.PHONE.matcher(s).matches());
+//        s="818-350-9566";
+//        System.out.println(s+" "+Patterns.PHONE.matcher(s).matches());
+//        s="(818) 350-9566";
+//        System.out.println(s+" "+Patterns.PHONE.matcher(s).matches());
+//        s="+1 (818) 350-9566";
+//        System.out.println(s+" "+Patterns.PHONE.matcher(s).matches());
+//        s="+1818-350-9566";
+//        System.out.println(s+" "+Patterns.PHONE.matcher(s).matches());
+//        s="+18183509566";
+//        System.out.println(s+" "+Patterns.PHONE.matcher(s).matches());
 
 //        String s="something.com";
 //

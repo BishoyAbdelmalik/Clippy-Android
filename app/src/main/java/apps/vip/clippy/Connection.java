@@ -56,6 +56,8 @@ public class Connection {
                         for(String s:arr) {
                             if (Patterns.WEB_URL.matcher(s).matches()) {
                                 links.add(s);
+                            }else if(Patterns.PHONE.matcher(s).matches()){
+                                //TODO handle phone numbers detected
                             }
                         }
                         System.out.println("Links in connection "+Arrays.toString(links.toArray()));
