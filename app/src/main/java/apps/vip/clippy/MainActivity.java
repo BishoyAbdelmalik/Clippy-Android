@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         verifyStoragePermissions(this);
         EditText ip = findViewById(R.id.ip);
         EditText port = findViewById(R.id.port);
-        //TODO only hide it if ip and port not saved
         ProgressBar bar=findViewById(R.id.progressBar2);
         bar.setVisibility(View.GONE);
         LinearLayout choice=findViewById(R.id.choice);
