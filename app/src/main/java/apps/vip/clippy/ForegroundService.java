@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -181,8 +182,8 @@ public class ForegroundService extends Service {
     public static void getInfo(ClipboardManager clipBoard, String command) throws Exception {
         new Connection(clipBoard, getURI(url, port, "send"), "info", command);
     }
-    public static void createLinksNotification(ArrayList<String> links) {
-        if(links.size()==0){
+    public static void createLinksNotification(String[] links) {
+        if(links.length==0){
             return;
         }
 
@@ -196,10 +197,14 @@ public class ForegroundService extends Service {
             mChannel.setDescription(Description);
             mNotificationManager.createNotificationChannel(mChannel);
         }
-        if (links.size()==1) {
-            for (int i = 0; i < links.size(); i++) {
-                String link = links.get(i);
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        if (links.length==1) {
+            for (int i = 0; i < links.length; i++) {
+                String link = links[i];
+                String s=link;
+                if(!s.startsWith("http")){
+                    s="http://"+s;
+                }
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, browserIntent, 0);
                 Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setContentTitle("Link Received")

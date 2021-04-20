@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class Connection {
@@ -49,14 +51,15 @@ public class Connection {
                         ClipData clipData = ClipData.newPlainText("text", data);
                         clipboardManager.setPrimaryClip(clipData);
                         String[] arr=data.trim().split("\\s+");
-                        ArrayList<String> links=new ArrayList<>();
+//                        ArrayList<String> links=new ArrayList<>();
+                        Set<String> links = new HashSet<>();
                         for(String s:arr) {
                             if (Patterns.WEB_URL.matcher(s).matches()) {
                                 links.add(s);
                             }
                         }
                         System.out.println("Links in connection "+Arrays.toString(links.toArray()));
-                        ForegroundService.createLinksNotification(links);
+                        ForegroundService.createLinksNotification(links.toArray(new String[0]));
                     } else if (type.compareTo("info") == 0) {
                         JSONObject jsonData = new JSONObject(data);
                         if (jsonData.has("type")) {
