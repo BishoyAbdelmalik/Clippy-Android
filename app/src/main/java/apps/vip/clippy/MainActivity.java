@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         bar.setVisibility(View.GONE);
         LinearLayout choice=findViewById(R.id.choice);
 
-        //TODO if info exist attempt to connect first
         SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String ipAdd=sharedPref.getString("ip","-1");
         String portNumber=sharedPref.getString("port","-1");
