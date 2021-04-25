@@ -199,21 +199,19 @@ public class ForegroundService extends Service {
         }
 //        Intent intent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phone.trim(),null));
         Intent callIntent = new Intent(context, openDialer.class);
-        Intent msgIntent = new Intent(context, openDialer.class);
         callIntent.putExtra("phone", phone.trim());
-        msgIntent.putExtra("phone", phone.trim());
-        callIntent.putExtra("type", true);
-        msgIntent.putExtra("type", false);
         PendingIntent call = PendingIntent.getActivity(context, 0, callIntent, 0);
+        Intent msgIntent = new Intent(context, openSMS.class);
+        msgIntent.putExtra("phone", phone.trim());
         PendingIntent sms = PendingIntent.getActivity(context, 0, msgIntent, 0);
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle("Phone Number Received")
                 .setContentText("click to call " + phone)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentIntent(call)
+                .setContentIntent(call)
                 .setAutoCancel(true)
-                .addAction(R.drawable.ic_launcher_foreground, "Call", call)
-                .addAction(R.drawable.ic_launcher_foreground, "Message", sms)
+                .addAction(R.drawable.ic_baseline_arrow_left, "Call", call)
+                .addAction(R.drawable.ic_baseline_arrow_right, "Message", sms)
                 .build();
         phoneNotificationID += 1;
         mNotificationManager.notify(phoneNotificationID, notification);

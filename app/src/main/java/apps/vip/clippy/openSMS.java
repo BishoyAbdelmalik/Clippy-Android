@@ -6,21 +6,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-public class openDialer extends AppCompatActivity {
+public class openSMS extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        phone();
+        sms();
         finish();
 
     }
 
-
-    private void phone() {
+    private void sms() {
         String phone = getIntent().getStringExtra("phone");
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-//        intent.setData(Uri.parse("tel:8183509566"));
-        intent.setData(Uri.fromParts("tel", phone, null));
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("sms:" + phone));
         startActivity(intent);
     }
 
