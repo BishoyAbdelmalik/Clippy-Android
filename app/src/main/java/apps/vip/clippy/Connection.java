@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class Connection {
-    private WebSocketClient mWs;
+    private final WebSocketClient mWs;
     public static String lastRecieved = "";
     boolean mainConnection = false;
     Object o;
@@ -50,17 +50,21 @@ public class Connection {
                         lastRecieved = data;
                         ClipData clipData = ClipData.newPlainText("text", data);
                         clipboardManager.setPrimaryClip(clipData);
-                        String[] arr=data.trim().split("\\s+");
+                        String[] arr = data.trim().split("\\s+");
 //                        ArrayList<String> links=new ArrayList<>();
                         Set<String> links = new HashSet<>();
-                        for(String s:arr) {
+                        ForegroundService.linksNotificationID = 0;
+                        ForegroundService.phoneNotificationID = 100;
+
+                        for (String s : arr) {
                             if (Patterns.WEB_URL.matcher(s).matches()) {
                                 links.add(s);
-                            }else if(Patterns.PHONE.matcher(s).matches()){
+                            } else if (Patterns.PHONE.matcher(s).matches()) {
                                 //TODO handle phone numbers detected
+                                ForegroundService.createPhoneNumberNotification(s);
                             }
                         }
-                        System.out.println("Links in connection "+Arrays.toString(links.toArray()));
+                        System.out.println("Links in connection " + Arrays.toString(links.toArray()));
                         ForegroundService.createLinksNotification(links.toArray(new String[0]));
                     } else if (type.compareTo("info") == 0) {
                         JSONObject jsonData = new JSONObject(data);
@@ -200,7 +204,7 @@ public class Connection {
         try {
             // Using an Async solution from SO
             // https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
-            new DownloadImageTask((ImageView) media_control.playingThumb)
+            new DownloadImageTask(media_control.playingThumb)
                     .execute(thumbnailUrl);
         } catch (Exception e) {
             System.err.println("lmao get fukd user");

@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -35,7 +36,6 @@ public class ForegroundService extends Service {
 
     public static String playingTXT = "Nothing Playing";
     public static String thumbnailUrl = "https://memesr.com/meme-templates/doge-meme.png";
-
 
 
     @Override
@@ -173,17 +173,51 @@ public class ForegroundService extends Service {
     }
     public static void closeRemoteControlConnection(){
         System.out.println("close remote control connection");
-        if (remoteControlConnection!=null && remoteControlConnection.isConnected()) {
+        if (remoteControlConnection != null && remoteControlConnection.isConnected()) {
             remoteControlConnection.close();
-            remoteControlConnection=null;
+            remoteControlConnection = null;
         }
 
-        }
+    }
+
     public static void getInfo(ClipboardManager clipBoard, String command) throws Exception {
         new Connection(clipBoard, getURI(url, port, "send"), "info", command);
     }
+
+    static int phoneNotificationID = 100;
+
+    public static void createPhoneNumberNotification(String phone) {
+        String CHANNEL_ID = "Phone Number";
+        CharSequence name = "Phone Number";
+        String Description = "for phone numbers from PC";
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        //create the channel
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            mChannel.setDescription(Description);
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+//        Intent intent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phone.trim(),null));
+        Intent intent = new Intent(context, openDialer.class);
+        intent.putExtra("phone", phone.trim());
+
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setContentTitle("Phone Number Received")
+                .setContentText("click to call " + phone)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build();
+        phoneNotificationID += 1;
+        mNotificationManager.notify(phoneNotificationID, notification);
+    }
+
+    static int linksNotificationID = 0;
+
     public static void createLinksNotification(String[] links) {
-        if(links.length==0){
+        if (links.length == 0) {
             return;
         }
 
@@ -213,7 +247,8 @@ public class ForegroundService extends Service {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .build();
-                mNotificationManager.notify(i + 2, notification);
+                linksNotificationID = i + 2;
+                mNotificationManager.notify(linksNotificationID, notification);
             }
         }else{
             Intent notificationIntent = new Intent(context, LinksPage.class);

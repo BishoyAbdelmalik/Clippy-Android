@@ -28,6 +28,10 @@ public class main_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+//        Intent intent = new Intent(Intent.ACTION_DIAL);
+////        intent.setData(Uri.parse("tel:8183509566"));
+//        intent.setData(Uri.fromParts("tel","8183509566",null));
+//        startActivity(intent);
         Context context = this;
         SharedPreferences sharedPref = context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
