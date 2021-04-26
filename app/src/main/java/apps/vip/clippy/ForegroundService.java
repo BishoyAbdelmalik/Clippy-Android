@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -20,8 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Set;
 
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -184,7 +181,6 @@ public class ForegroundService extends Service {
         new Connection(clipBoard, getURI(url, port, "send"), "info", command);
     }
 
-    static int phoneNotificationID = 100;
 
     public static void createPhoneNumberNotification(String phone) {
         String CHANNEL_ID = "Phone Number";
@@ -213,11 +209,9 @@ public class ForegroundService extends Service {
                 .addAction(R.drawable.ic_baseline_arrow_left, "Call", call)
                 .addAction(R.drawable.ic_baseline_arrow_right, "Message", sms)
                 .build();
-        phoneNotificationID += 1;
-        mNotificationManager.notify(phoneNotificationID, notification);
+        mNotificationManager.notify(phone.hashCode(), notification);
     }
 
-    static int linksNotificationID = 0;
 
     public static void createLinksNotification(String[] links) {
         if (links.length == 0) {
@@ -250,8 +244,7 @@ public class ForegroundService extends Service {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .build();
-                linksNotificationID = i + 2;
-                mNotificationManager.notify(linksNotificationID, notification);
+                mNotificationManager.notify(link.hashCode(), notification);
             }
         }else{
             Intent notificationIntent = new Intent(context, LinksPage.class);

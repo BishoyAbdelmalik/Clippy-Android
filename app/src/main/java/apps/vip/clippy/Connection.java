@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Connection {
     private final WebSocketClient mWs;
@@ -51,18 +53,18 @@ public class Connection {
                         ClipData clipData = ClipData.newPlainText("text", data);
                         clipboardManager.setPrimaryClip(clipData);
                         String[] arr = data.trim().split("\\s+");
-//                        ArrayList<String> links=new ArrayList<>();
                         Set<String> links = new HashSet<>();
-                        ForegroundService.linksNotificationID = 0;
-                        ForegroundService.phoneNotificationID = 100;
-
                         for (String s : arr) {
                             if (Patterns.WEB_URL.matcher(s).matches()) {
                                 links.add(s);
-                            } else if (Patterns.PHONE.matcher(s).matches()) {
-                                //TODO handle phone numbers detected
-                                ForegroundService.createPhoneNumberNotification(s);
                             }
+                        }
+                        Pattern p = Pattern.compile("(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}");
+                        Matcher m = p.matcher(data);
+                        while (m.find()) {
+                            String found = m.group();
+                            System.out.println(found);
+                            ForegroundService.createPhoneNumberNotification(found);
                         }
                         System.out.println("Links in connection " + Arrays.toString(links.toArray()));
                         ForegroundService.createLinksNotification(links.toArray(new String[0]));
