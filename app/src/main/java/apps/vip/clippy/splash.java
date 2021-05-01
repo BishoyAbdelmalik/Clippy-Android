@@ -4,11 +4,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -57,14 +59,20 @@ public class splash extends AppCompatActivity {
     }
 
     private void load() {
+        Context context=this;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                if(ForegroundService.main!=null && ForegroundService.main.isConnected()){
 
-        if(ForegroundService.main!=null && ForegroundService.main.isConnected()){
+                    startActivity(new Intent(context, main_page.class));
+                }else {
+                    startActivity(new Intent(context, MainActivity.class));
+                }
+                finish();
+            }
+        }, 2000);   //5 seconds
 
-            startActivity(new Intent(this, main_page.class));
-        }else {
-            startActivity(new Intent(this, MainActivity.class));
-        }
-        finish();
     }
 
     @Override
